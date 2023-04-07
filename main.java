@@ -54,7 +54,7 @@ class Main {
                     start = i;// This is to remember where the string starts
 
                     if (i == currentLine.length() - 1) {// " cannot be at the end of the line
-                        announceError("\"");
+                        announceError("\"", i);
                         return;
                     }
                     do {// This loops until it finds a " or EOL
@@ -69,7 +69,7 @@ class Main {
                                 if (!(i == currentLine.length() - 1)) {
                                     i++;
                                 } else {
-                                    announceError(currentLine.substring(start, i + 1));
+                                    announceError(currentLine.substring(start, i + 1), start);
                                     return;
                                 }
                             }
@@ -80,17 +80,17 @@ class Main {
                     if (character == '"') {// If the last char read isnt a ", anounce error
                         addToken("STRING", start);
                     } else {
-                        announceError(currentLine.substring(start, i + 1));
+                        announceError(currentLine.substring(start, i + 1), start);
                         return;
                     }
                 } else if (character == '\'') {
                     start = i;
 
                     if (i == currentLine.length() - 1) { // " cannot be at the end of the line
-                        announceError("\'");
+                        announceError("\'",i);
                         return;
                     } else if (i == currentLine.length() - 2) {
-                        announceError(currentLine.substring(i, i + 2));
+                        announceError(currentLine.substring(i, i + 2),i);
                         return;
                     }
 
@@ -113,7 +113,7 @@ class Main {
                             addToken("CHAR", start);
 
                         } else {
-                            announceError(currentLine.substring(start, i));
+                            announceError(currentLine.substring(start, i), start);
                             return;
                         }
                     }
@@ -154,10 +154,10 @@ class Main {
                         if (isTokenBreaker(character)) {
                             i--;
                             addToken("IDENTIFIER", start);
-                        } else if (i == currentLine.length() - 1) {
+                        } else if (i == currentLine.length() - 1 && isRestOfIdentifier(character)) {
                             addToken("IDENTIFIER", start);
                         } else {
-                            announceError(currentLine.substring(start, i));
+                            announceError(currentLine.substring(start, i), start);
                             return;
 
                         }
@@ -205,10 +205,10 @@ class Main {
                         if (isTokenBreaker(character)) {
                             i--;
                             addToken("IDENTIFIER", start);
-                        } else if (i == currentLine.length() - 1) {
+                        } else if (i == currentLine.length() - 1 && isRestOfIdentifier(character)) {
                             addToken("IDENTIFIER", start);
                         } else {
-                            announceError(currentLine.substring(start, i));
+                            announceError(currentLine.substring(start, i), start);
                             return;
 
                         }
@@ -256,10 +256,10 @@ class Main {
                         if (isTokenBreaker(character)) {
                             i--;
                             addToken("IDENTIFIER", start);
-                        } else if (i == currentLine.length() - 1) {
+                        } else if (i == currentLine.length() - 1 && isRestOfIdentifier(character)) {
                             addToken("IDENTIFIER", start);
                         } else {
-                            announceError(currentLine.substring(start, i));
+                            announceError(currentLine.substring(start, i), start);
                             return;
 
                         }
@@ -306,10 +306,10 @@ class Main {
                         if (isTokenBreaker(character)) {
                             i--;
                             addToken("IDENTIFIER", start);
-                        } else if (i == currentLine.length() - 1) {
+                        } else if (i == currentLine.length() - 1 && isRestOfIdentifier(character)) {
                             addToken("IDENTIFIER", start);
                         } else {
-                            announceError(currentLine.substring(start, i));
+                            announceError(currentLine.substring(start, i), start);
                             return;
 
                         }
@@ -357,10 +357,10 @@ class Main {
                         if (isTokenBreaker(character)) {
                             i--;
                             addToken("IDENTIFIER", start);
-                        } else if (i == currentLine.length() - 1) {
+                        } else if (i == currentLine.length() - 1 && isRestOfIdentifier(character)) {
                             addToken("IDENTIFIER", start);
                         } else {
-                            announceError(currentLine.substring(start, i));
+                            announceError(currentLine.substring(start, i), start);
                             return;
 
                         }
@@ -408,10 +408,10 @@ class Main {
                         if (isTokenBreaker(character)) {
                             i--;
                             addToken("IDENTIFIER", start);
-                        } else if (i == currentLine.length() - 1) {
+                        } else if (i == currentLine.length() - 1 && isRestOfIdentifier(character)) {
                             addToken("IDENTIFIER", start);
                         } else {
-                            announceError(currentLine.substring(start, i));
+                            announceError(currentLine.substring(start, i), start);
                             return;
 
                         }
@@ -459,10 +459,10 @@ class Main {
                         if (isTokenBreaker(character)) {
                             i--;
                             addToken("IDENTIFIER", start);
-                        } else if (i == currentLine.length() - 1) {
+                        } else if (i == currentLine.length() - 1 && isRestOfIdentifier(character)) {
                             addToken("IDENTIFIER", start);
                         } else {
-                            announceError(currentLine.substring(start, i));
+                            announceError(currentLine.substring(start, i), start);
                             return;
 
                         }
@@ -491,10 +491,10 @@ class Main {
                     if (isTokenBreaker(character)) {
                         i--;
                         addToken("IDENTIFIER", start);
-                    } else if (i == currentLine.length() - 1) {
+                    } else if (i == currentLine.length() - 1 && isRestOfIdentifier(character)) {
                         addToken("IDENTIFIER", start);
                     } else {
-                        announceError(currentLine.substring(start, i));
+                        announceError(currentLine.substring(start, i + 1), start);
                         return;
 
                     }
@@ -580,7 +580,16 @@ class Main {
         writer.close();
     }
 
-    public static void announceError(String lex) throws FileNotFoundException {
+    public static void announceError(String lex, int index) throws FileNotFoundException {
+        int tempI = index;
+        if (lex.length() != 1){
+            while ((tempI < currentLine.length() - 1) && (currentLine.charAt(tempI) != ' ')){
+                tempI++;
+            }
+        }
+        System.out.println("i = " + index + " tempI = " + tempI);
+        lex = currentLine.substring(index, tempI + 1);
+
         PrintWriter writer = new PrintWriter("output.txt");
         writer.println("LEXICAL ERROR [" + (j + 1) + ":" + (i + 1) + "]: Invalid token `" + lex + "`");
         writer.close();
