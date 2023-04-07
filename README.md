@@ -4,7 +4,5 @@ In this project we created a lexical analyser for a imaginary programing languag
 TODO LIST
 
 --Add Number Literals
---Add Boolean Literals
 --Add '\'' case to Character Literals
---Add Keywords
 --Add Identifiers
