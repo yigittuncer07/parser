@@ -5,4 +5,3 @@ TODO LIST
 
 --Add Number Literals
 --Add '\'' case to Character Literals
---Add Identifiers
