@@ -57,18 +57,32 @@ class Main {
                     }
                     do {//This loops until it finds a " or EOL
 
+                        int temp = i;
                         i++;
                         character = currentLine.charAt(i);
 
+                        //This part checks if the " has a / behind it
+                        if (character == '\"'){
+                            if (currentLine.charAt(temp) == '\\'){
+                                if (!(i == currentLine.length() - 1)){
+                                    i++;
+                                } else {
+                                    announceError(currentLine.substring(start, i + 1));
+                                    return;
+                                }
+                            }
+                        }
+
                     } while (!((i == currentLine.length() - 1) || character == '"'));
 
+                    System.out.println(character);
                     if (character == '"') {//If the last char read isnt a ", anounce error
                         addToken("STRING", start);
                     } else {
                         announceError(currentLine.substring(start, i + 1));
                         return;
                     }
-                } else if (character == ' ') {
+                } else if (character == '\'') {
 
                 }
             }
