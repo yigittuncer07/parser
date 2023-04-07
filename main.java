@@ -18,7 +18,7 @@ class Main {
 
     public static void main(String[] args) throws FileNotFoundException {
 
-        Scanner scanner = new Scanner(new File(args[0]));//Initialize scanner using args
+        Scanner scanner = new Scanner(new File(args[0]));// Initialize scanner using args
 
         while (scanner.hasNextLine()) {
             currentLine = scanner.nextLine();
@@ -27,7 +27,7 @@ class Main {
                 asciiCode = (int) currentLine.charAt(i);
                 character = currentLine.charAt(i);
 
-                if (character == '~') {//This is a comment so the rest of the line is skipped
+                if (character == '~') {// This is a comment so the rest of the line is skipped
                     i = currentLine.length() - 1;
 
                 } else if (character == '(') {
@@ -48,23 +48,23 @@ class Main {
                 } else if (character == '}') {
                     addToken("RIGHTCURLYB", i);
 
-                } else if (character == '"') {//This part reads until it finds another ", otherwise anounces an error.
-                    start = i;//This is to remember where the string starts
+                } else if (character == '"') {// This part reads until it finds another ", otherwise anounces an error.
+                    start = i;// This is to remember where the string starts
 
-                    if (i == currentLine.length() - 1) {//" cannot be at the end of the line
+                    if (i == currentLine.length() - 1) {// " cannot be at the end of the line
                         announceError("\"");
                         return;
                     }
-                    do {//This loops until it finds a " or EOL
+                    do {// This loops until it finds a " or EOL
 
                         int temp = i;
                         i++;
                         character = currentLine.charAt(i);
 
-                        //This part checks if the " has a / behind it
-                        if (character == '\"'){
-                            if (currentLine.charAt(temp) == '\\'){
-                                if (!(i == currentLine.length() - 1)){
+                        // This part checks if the " has a / behind it
+                        if (character == '\"') {
+                            if (currentLine.charAt(temp) == '\\') {
+                                if (!(i == currentLine.length() - 1)) {
                                     i++;
                                 } else {
                                     announceError(currentLine.substring(start, i + 1));
@@ -75,21 +75,52 @@ class Main {
 
                     } while (!((i == currentLine.length() - 1) || character == '"'));
 
-                    System.out.println(character);
-                    if (character == '"') {//If the last char read isnt a ", anounce error
+                    if (character == '"') {// If the last char read isnt a ", anounce error
                         addToken("STRING", start);
                     } else {
                         announceError(currentLine.substring(start, i + 1));
                         return;
                     }
                 } else if (character == '\'') {
+                    start = i;
 
+                    if (i == currentLine.length() - 1) { // " cannot be at the end of the line
+                        announceError("\'");
+                        return;
+                    } else if (i == currentLine.length() - 2){
+                        announceError(currentLine.substring(i, i + 2));
+                        return;
+                    }
+
+                    i++;
+                    character = currentLine.charAt(i);
+
+                    if (character == '\\'){
+                        // i++;
+                        // character = currentLine.charAt(i);
+
+                        // if (character == '\''){
+                        //     addToken("CHAR", start);
+
+                        // }
+                    } else {
+                        i++;
+                        character = currentLine.charAt(i);
+
+                        if (character == '\''){
+                            addToken("CHAR", start);
+
+                        } else {
+                            announceError(currentLine.substring(start, i));
+                            return;
+                        }
+                    }
                 }
             }
-            j++;//Incriments which line we are on
+            j++;// Incriments which line we are on
         }
 
-        //Prints the token if the program didnt stop due to errors.
+        // Prints the token if the program didnt stop due to errors.
         printArrayList();
 
     }

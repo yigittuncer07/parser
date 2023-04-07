@@ -5,6 +5,6 @@ TODO LIST
 
 --Add Number Literals
 --Add Boolean Literals
---Add Character Literals
+--Add '\'' case to Character Literals
 --Add Keywords
 --Add Identifiers
