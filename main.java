@@ -13,8 +13,10 @@ class Main {
     static int state = 0;
     static int start = 0;
     static int tempS = 0;
+    static int keywordLength = 0;
     static int i = 0;
     static int j = 0;
+    static boolean foundKeyword = false;
 
     public static void main(String[] args) throws FileNotFoundException {
 
@@ -57,13 +59,13 @@ class Main {
                     }
                     do {// This loops until it finds a " or EOL
 
-                        int temp = i;
+                        int prev = i;
                         i++;
                         character = currentLine.charAt(i);
 
                         // This part checks if the " has a / behind it
                         if (character == '\"') {
-                            if (currentLine.charAt(temp) == '\\') {
+                            if (currentLine.charAt(prev) == '\\') {
                                 if (!(i == currentLine.length() - 1)) {
                                     i++;
                                 } else {
@@ -87,7 +89,7 @@ class Main {
                     if (i == currentLine.length() - 1) { // " cannot be at the end of the line
                         announceError("\'");
                         return;
-                    } else if (i == currentLine.length() - 2){
+                    } else if (i == currentLine.length() - 2) {
                         announceError(currentLine.substring(i, i + 2));
                         return;
                     }
@@ -95,19 +97,19 @@ class Main {
                     i++;
                     character = currentLine.charAt(i);
 
-                    if (character == '\\'){
+                    if (character == '\\') {
                         // i++;
                         // character = currentLine.charAt(i);
 
                         // if (character == '\''){
-                        //     addToken("CHAR", start);
+                        // addToken("CHAR", start);
 
                         // }
                     } else {
                         i++;
                         character = currentLine.charAt(i);
 
-                        if (character == '\''){
+                        if (character == '\'') {
                             addToken("CHAR", start);
 
                         } else {
@@ -115,13 +117,90 @@ class Main {
                             return;
                         }
                     }
+                } else if (character == 'd') {
+                    start = i;
+                    keywordLength = 6;
+                    if (currentLine.length() - i > keywordLength - 1) {
+                        System.out.println("long enough");
+                        if (currentLine.substring(i, i + keywordLength).equals("define")) {// If it contains define this
+                            System.out.println("contains define");
+                            if ((i + keywordLength - 1) == currentLine.length() - 1) {
+                                System.out.println("added define because of eol");
+                                addToken("DEFINE", start);
+                                foundKeyword = true;
+                                i = i + keywordLength - 1;
+                            } else if (isTokenBreaker(currentLine.charAt(i + keywordLength))) {
+                                System.out.println("added define because of tokenBreaker");
+                                addToken("DEFINE", start);
+                                foundKeyword = true;
+                                i = i + keywordLength - 1;
+                            }
+                        }
+                    }
+                    if (!foundKeyword) {
+                        do {
+
+                            i++;
+                            character = currentLine.charAt(i);
+                            System.out.print(character);
+
+                        } while (isRestOfIdentifier(character) && !(i == currentLine.length() - 1));
+                        System.out.println();
+
+                        if (i == currentLine.length() - 1) {
+                            addToken("IDENTIFIER", start);
+                            System.out.println("starting loop again at " + i);
+                        } else if (isTokenBreaker(character)) {
+                            addToken("IDENTIFIER", start);
+                            System.out.println("starting loop again at " + i);
+                            i--;
+                        } else {
+                            announceError(currentLine.substring(start, i));
+                            return;
+
+                        }
+
+                    }
+
+                    foundKeyword = false;
+
+                    System.out.println();
+
                 }
             }
-            j++;// Incriments which line we are on
-        }
+            j++;
 
-        // Prints the token if the program didnt stop due to errors.
-        printArrayList();
+            // Prints the token if the program didnt stop due to errors.
+            printArrayList();
+
+        }
+    }
+
+    public static boolean isRestOfIdentifier(char c) {
+        int i = (int) c;
+        if ((i >= 97) && (i <= 122)) {
+            // System.out.println("ascii = " + i);
+            // System.out.println("i am a letter, " + c);
+            return true;
+        } else if ((i >= 30) && (i <= 39)) {
+            // System.out.println("ascii = " + i);
+            // System.out.println("i am a number, " + c);
+            return true;
+        } else if ((c == '.') || (c == '+') || (c == '-')) {
+            // System.out.println("i am " + c);
+            return true;
+        } else {
+            // System.out.println("i am not part of an identifier --> " + c);
+            return false;
+        }
+    }
+
+    public static boolean isTokenBreaker(char c) {
+        if ((c == '\'') || (c == '\"') || (c == '(') || (c == ')') || (c == '[') || (c == ']') || (c == '{')
+                || (c == '}') || (c == ' ')) {
+            return true;
+        }
+        return false;
 
     }
 
