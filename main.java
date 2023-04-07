@@ -151,13 +151,11 @@ class Main {
                         } while (isRestOfIdentifier(character) && !(i == currentLine.length() - 1));
                         System.out.println();
 
-                        if (i == currentLine.length() - 1) {
-                            addToken("IDENTIFIER", start);
-                            System.out.println("starting loop again at " + i);
-                        } else if (isTokenBreaker(character)) {
-                            addToken("IDENTIFIER", start);
-                            System.out.println("starting loop again at " + i);
+                        if (isTokenBreaker(character)) {
                             i--;
+                            addToken("IDENTIFIER", start);
+                        } else if (i == currentLine.length() - 1) {
+                            addToken("IDENTIFIER", start);
                         } else {
                             announceError(currentLine.substring(start, i));
                             return;
@@ -204,13 +202,11 @@ class Main {
                         } while (isRestOfIdentifier(character) && !(i == currentLine.length() - 1));
                         System.out.println();
 
-                        if (i == currentLine.length() - 1) {
-                            addToken("IDENTIFIER", start);
-                            System.out.println("starting loop again at " + i);
-                        } else if (isTokenBreaker(character)) {
-                            addToken("IDENTIFIER", start);
-                            System.out.println("starting loop again at " + i);
+                        if (isTokenBreaker(character)) {
                             i--;
+                            addToken("IDENTIFIER", start);
+                        } else if (i == currentLine.length() - 1) {
+                            addToken("IDENTIFIER", start);
                         } else {
                             announceError(currentLine.substring(start, i));
                             return;
@@ -257,13 +253,11 @@ class Main {
                         } while (isRestOfIdentifier(character) && !(i == currentLine.length() - 1));
                         System.out.println();
 
-                        if (i == currentLine.length() - 1) {
-                            addToken("IDENTIFIER", start);
-                            System.out.println("starting loop again at " + i);
-                        } else if (isTokenBreaker(character)) {
-                            addToken("IDENTIFIER", start);
-                            System.out.println("starting loop again at " + i);
+                        if (isTokenBreaker(character)) {
                             i--;
+                            addToken("IDENTIFIER", start);
+                        } else if (i == currentLine.length() - 1) {
+                            addToken("IDENTIFIER", start);
                         } else {
                             announceError(currentLine.substring(start, i));
                             return;
@@ -309,13 +303,11 @@ class Main {
                         } while (isRestOfIdentifier(character) && !(i == currentLine.length() - 1));
                         System.out.println();
 
-                        if (i == currentLine.length() - 1) {
-                            addToken("IDENTIFIER", start);
-                            System.out.println("starting loop again at " + i);
-                        } else if (isTokenBreaker(character)) {
-                            addToken("IDENTIFIER", start);
-                            System.out.println("starting loop again at " + i);
+                        if (isTokenBreaker(character)) {
                             i--;
+                            addToken("IDENTIFIER", start);
+                        } else if (i == currentLine.length() - 1) {
+                            addToken("IDENTIFIER", start);
                         } else {
                             announceError(currentLine.substring(start, i));
                             return;
@@ -362,13 +354,11 @@ class Main {
                         } while (isRestOfIdentifier(character) && !(i == currentLine.length() - 1));
                         System.out.println();
 
-                        if (i == currentLine.length() - 1) {
-                            addToken("IDENTIFIER", start);
-                            System.out.println("starting loop again at " + i);
-                        } else if (isTokenBreaker(character)) {
-                            addToken("IDENTIFIER", start);
-                            System.out.println("starting loop again at " + i);
+                        if (isTokenBreaker(character)) {
                             i--;
+                            addToken("IDENTIFIER", start);
+                        } else if (i == currentLine.length() - 1) {
+                            addToken("IDENTIFIER", start);
                         } else {
                             announceError(currentLine.substring(start, i));
                             return;
@@ -415,13 +405,11 @@ class Main {
                         } while (isRestOfIdentifier(character) && !(i == currentLine.length() - 1));
                         System.out.println();
 
-                        if (i == currentLine.length() - 1) {
-                            addToken("IDENTIFIER", start);
-                            System.out.println("starting loop again at " + i);
-                        } else if (isTokenBreaker(character)) {
-                            addToken("IDENTIFIER", start);
-                            System.out.println("starting loop again at " + i);
+                        if (isTokenBreaker(character)) {
                             i--;
+                            addToken("IDENTIFIER", start);
+                        } else if (i == currentLine.length() - 1) {
+                            addToken("IDENTIFIER", start);
                         } else {
                             announceError(currentLine.substring(start, i));
                             return;
@@ -468,13 +456,11 @@ class Main {
                         } while (isRestOfIdentifier(character) && !(i == currentLine.length() - 1));
                         System.out.println();
 
-                        if (i == currentLine.length() - 1) {
-                            addToken("IDENTIFIER", start);
-                            System.out.println("starting loop again at " + i);
-                        } else if (isTokenBreaker(character)) {
-                            addToken("IDENTIFIER", start);
-                            System.out.println("starting loop again at " + i);
+                        if (isTokenBreaker(character)) {
                             i--;
+                            addToken("IDENTIFIER", start);
+                        } else if (i == currentLine.length() - 1) {
+                            addToken("IDENTIFIER", start);
                         } else {
                             announceError(currentLine.substring(start, i));
                             return;
@@ -486,12 +472,38 @@ class Main {
                     foundKeyword = false;
 
                     System.out.println();
+                } else if (isStartOfIdentifier(character)) {
+                    System.out.println("Yeah this is the start of a character");
+                    start = i;
+                    if (currentLine.length() - 1 == i) {// This prevents error from single characters
+                        addToken("IDENTIFIER", start);
+                    }
+                    do {
+
+                        i++;
+                        character = currentLine.charAt(i);
+                        System.out.print(character);
+
+                    } while (isRestOfIdentifier(character) && !(i == currentLine.length() - 1));
+
+                    System.out.println();
+
+                    if (isTokenBreaker(character)) {
+                        i--;
+                        addToken("IDENTIFIER", start);
+                    } else if (i == currentLine.length() - 1) {
+                        addToken("IDENTIFIER", start);
+                    } else {
+                        announceError(currentLine.substring(start, i));
+                        return;
+
+                    }
+                    System.out.println();
                 }
-            
+
             }
 
-
-            //END OF IF STATEMENTS ---------------------------------------------------
+            // END OF IF STATEMENTS ---------------------------------------------------
             j++;
             // Prints the token if the program didnt stop due to errors.
             printArrayList();
@@ -499,14 +511,15 @@ class Main {
         }
     }
 
-    public static boolean isStartOfIdentifier(char c){
-        if (c == ' '){
+    public static boolean isStartOfIdentifier(char c) {
+        if (c == ' ') {
             return false;
-        }   
+        }
 
-        if ((c == '!') || (c == '*') || (c == '/') || (c == ':') || (c == '<') || (c == '=') || (c == '>') || (c == '?')){
+        if ((c == '!') || (c == '*') || (c == '/') || (c == ':') || (c == '<') || (c == '=') || (c == '>')
+                || (c == '?')) {
             return true;
-        } else if (isLetter(c)){
+        } else if (isLetter(c)) {
             return true;
         }
         return false;
@@ -519,15 +532,14 @@ class Main {
             return false;
         }
         if (isLetter(c)) {
-            // System.out.println("ascii = " + i);
-            // System.out.println("i am a letter, " + c);
+            System.out.println("i am a letter, " + c);
             return true;
-        } else if ((i >= 30) && (i <= 39)) {
+        } else if ((i >= 48) && (i <= 57)) {
             // System.out.println("ascii = " + i);
-            // System.out.println("i am a number, " + c);
+            System.out.println("i am a number, " + c);
             return true;
         } else if ((c == '.') || (c == '+') || (c == '-')) {
-            // System.out.println("i am " + c);
+            System.out.println("i am " + c);
             return true;
         } else {
             // System.out.println("i am not part of an identifier --> " + c);
@@ -535,10 +547,9 @@ class Main {
         }
     }
 
-    public static boolean isLetter(char c){
+    public static boolean isLetter(char c) {
         int i = (int) c;
         if ((i >= 97) && (i <= 122)) {
-            // System.out.println("ascii = " + i);
             // System.out.println("i am a letter, " + c);
             return true;
         }
@@ -548,9 +559,12 @@ class Main {
     public static boolean isTokenBreaker(char c) {
         if ((c == '\'') || (c == '\"') || (c == '(') || (c == ')') || (c == '[') || (c == ']') || (c == '{')
                 || (c == '}') || (c == ' ') || (c == '~')) {
+            System.out.println(c + " is a token breaker");
             return true;
+        } else {
+            System.out.println(c + " is NOT a token breaker");
+            return false;
         }
-        return false;
 
     }
 
