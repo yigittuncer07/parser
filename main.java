@@ -137,6 +137,10 @@ class Main {
                             }
                         }
                     }
+                    if (currentLine.length() - 1 == i) {// This prevents error from single characters
+                        addToken("IDENTIFIER", start);
+                        foundKeyword = true;
+                    }
                     if (!foundKeyword) {
                         do {
 
@@ -166,19 +170,355 @@ class Main {
 
                     System.out.println();
 
-                }
-            }
-            j++;
+                } else if (character == 'l') {
+                    start = i;
+                    keywordLength = 3;
+                    if (currentLine.length() - i > keywordLength - 1) {
+                        System.out.println("long enough");
+                        if (currentLine.substring(i, i + keywordLength).equals("let")) {// If it contains define this
+                            System.out.println("contains let");
+                            if ((i + keywordLength - 1) == currentLine.length() - 1) {
+                                System.out.println("added let because of eol");
+                                addToken("LET", start);
+                                foundKeyword = true;
+                                i = i + keywordLength - 1;
+                            } else if (isTokenBreaker(currentLine.charAt(i + keywordLength))) {
+                                System.out.println("added define because of tokenBreaker");
+                                addToken("LET", start);
+                                foundKeyword = true;
+                                i = i + keywordLength - 1;
+                            }
+                        }
+                    }
+                    if (currentLine.length() - 1 == i) {// This prevents error from single characters
+                        addToken("IDENTIFIER", start);
+                        foundKeyword = true;
+                    }
+                    if (!foundKeyword) {
+                        do {
 
+                            i++;
+                            character = currentLine.charAt(i);
+                            System.out.print(character);
+
+                        } while (isRestOfIdentifier(character) && !(i == currentLine.length() - 1));
+                        System.out.println();
+
+                        if (i == currentLine.length() - 1) {
+                            addToken("IDENTIFIER", start);
+                            System.out.println("starting loop again at " + i);
+                        } else if (isTokenBreaker(character)) {
+                            addToken("IDENTIFIER", start);
+                            System.out.println("starting loop again at " + i);
+                            i--;
+                        } else {
+                            announceError(currentLine.substring(start, i));
+                            return;
+
+                        }
+
+                    }
+
+                    foundKeyword = false;
+
+                    System.out.println();
+
+                } else if (character == 'c') {
+                    start = i;
+                    keywordLength = 4;
+                    if (currentLine.length() - i > keywordLength - 1) {
+                        System.out.println("long enough");
+                        if (currentLine.substring(i, i + keywordLength).equals("cond")) {// If it contains define this
+                            System.out.println("contains cond");
+                            if ((i + keywordLength - 1) == currentLine.length() - 1) {
+                                System.out.println("added cond because of eol");
+                                addToken("COND", start);
+                                foundKeyword = true;
+                                i = i + keywordLength - 1;
+                            } else if (isTokenBreaker(currentLine.charAt(i + keywordLength))) {
+                                System.out.println("added define because of tokenBreaker");
+                                addToken("COND", start);
+                                foundKeyword = true;
+                                i = i + keywordLength - 1;
+                            }
+                        }
+                    }
+                    if (currentLine.length() - 1 == i) {// This prevents error from single characters
+                        addToken("IDENTIFIER", start);
+                        foundKeyword = true;
+                    }
+                    if (!foundKeyword) {
+                        do {
+
+                            i++;
+                            character = currentLine.charAt(i);
+                            System.out.print(character);
+
+                        } while (isRestOfIdentifier(character) && !(i == currentLine.length() - 1));
+                        System.out.println();
+
+                        if (i == currentLine.length() - 1) {
+                            addToken("IDENTIFIER", start);
+                            System.out.println("starting loop again at " + i);
+                        } else if (isTokenBreaker(character)) {
+                            addToken("IDENTIFIER", start);
+                            System.out.println("starting loop again at " + i);
+                            i--;
+                        } else {
+                            announceError(currentLine.substring(start, i));
+                            return;
+
+                        }
+
+                    }
+
+                    foundKeyword = false;
+
+                    System.out.println();
+                } else if (character == 'i') {
+                    start = i;
+                    keywordLength = 2;
+                    if (currentLine.length() - i > keywordLength - 1) {
+                        System.out.println("long enough");
+                        if (currentLine.substring(i, i + keywordLength).equals("if")) {// If it contains define this
+                            System.out.println("contains if");
+                            if ((i + keywordLength - 1) == currentLine.length() - 1) {
+                                System.out.println("added if because of eol");
+                                addToken("IF", start);
+                                foundKeyword = true;
+                                i = i + keywordLength - 1;
+                            } else if (isTokenBreaker(currentLine.charAt(i + keywordLength))) {
+                                System.out.println("added if because of tokenBreaker");
+                                addToken("IF", start);
+                                foundKeyword = true;
+                                i = i + keywordLength - 1;
+                            }
+                        }
+                    }
+                    if (currentLine.length() - 1 == i) {// This prevents error from single characters
+                        addToken("IDENTIFIER", start);
+                        foundKeyword = true;
+                    }
+                    if (!foundKeyword) {
+                        do {
+
+                            i++;
+                            character = currentLine.charAt(i);
+                            System.out.print(character);
+
+                        } while (isRestOfIdentifier(character) && !(i == currentLine.length() - 1));
+                        System.out.println();
+
+                        if (i == currentLine.length() - 1) {
+                            addToken("IDENTIFIER", start);
+                            System.out.println("starting loop again at " + i);
+                        } else if (isTokenBreaker(character)) {
+                            addToken("IDENTIFIER", start);
+                            System.out.println("starting loop again at " + i);
+                            i--;
+                        } else {
+                            announceError(currentLine.substring(start, i));
+                            return;
+
+                        }
+
+                    }
+
+                    foundKeyword = false;
+
+                    System.out.println();
+                } else if (character == 'b') {
+                    start = i;
+                    keywordLength = 5;
+                    if (currentLine.length() - i > keywordLength - 1) {
+                        System.out.println("long enough");
+                        if (currentLine.substring(i, i + keywordLength).equals("begin")) {// If it contains define this
+                            System.out.println("contains begin");
+                            if ((i + keywordLength - 1) == currentLine.length() - 1) {
+                                System.out.println("added begin because of eol");
+                                addToken("BEGIN", start);
+                                foundKeyword = true;
+                                i = i + keywordLength - 1;
+                            } else if (isTokenBreaker(currentLine.charAt(i + keywordLength))) {
+                                System.out.println("added begin because of tokenBreaker");
+                                addToken("BEGIN", start);
+                                foundKeyword = true;
+                                i = i + keywordLength - 1;
+                            }
+                        }
+                    }
+
+                    if (currentLine.length() - 1 == i) {// This prevents error from single characters
+                        addToken("IDENTIFIER", start);
+                        foundKeyword = true;
+                    }
+                    if (!foundKeyword) {
+                        do {
+
+                            i++;
+                            character = currentLine.charAt(i);
+                            System.out.print(character);
+
+                        } while (isRestOfIdentifier(character) && !(i == currentLine.length() - 1));
+                        System.out.println();
+
+                        if (i == currentLine.length() - 1) {
+                            addToken("IDENTIFIER", start);
+                            System.out.println("starting loop again at " + i);
+                        } else if (isTokenBreaker(character)) {
+                            addToken("IDENTIFIER", start);
+                            System.out.println("starting loop again at " + i);
+                            i--;
+                        } else {
+                            announceError(currentLine.substring(start, i));
+                            return;
+
+                        }
+
+                    }
+
+                    foundKeyword = false;
+
+                    System.out.println();
+                } else if (character == 't') {
+                    start = i;
+                    keywordLength = 4;
+                    if (currentLine.length() - i > keywordLength - 1) {
+                        System.out.println("long enough");
+                        if (currentLine.substring(i, i + keywordLength).equals("true")) {// If it contains define this
+                            System.out.println("contains true");
+                            if ((i + keywordLength - 1) == currentLine.length() - 1) {
+                                System.out.println("added true because of eol");
+                                addToken("TRUE", start);
+                                foundKeyword = true;
+                                i = i + keywordLength - 1;
+                            } else if (isTokenBreaker(currentLine.charAt(i + keywordLength))) {
+                                System.out.println("added true because of tokenBreaker");
+                                addToken("TRUE", start);
+                                foundKeyword = true;
+                                i = i + keywordLength - 1;
+                            }
+                        }
+                    }
+
+                    if (currentLine.length() - 1 == i) {// This prevents error from single characters
+                        addToken("IDENTIFIER", start);
+                        foundKeyword = true;
+                    }
+                    if (!foundKeyword) {
+                        do {
+
+                            i++;
+                            character = currentLine.charAt(i);
+                            System.out.print(character);
+
+                        } while (isRestOfIdentifier(character) && !(i == currentLine.length() - 1));
+                        System.out.println();
+
+                        if (i == currentLine.length() - 1) {
+                            addToken("IDENTIFIER", start);
+                            System.out.println("starting loop again at " + i);
+                        } else if (isTokenBreaker(character)) {
+                            addToken("IDENTIFIER", start);
+                            System.out.println("starting loop again at " + i);
+                            i--;
+                        } else {
+                            announceError(currentLine.substring(start, i));
+                            return;
+
+                        }
+
+                    }
+
+                    foundKeyword = false;
+
+                    System.out.println();
+                } else if (character == 'f') {
+                    start = i;
+                    keywordLength = 5;
+                    if (currentLine.length() - i > keywordLength - 1) {
+                        System.out.println("long enough");
+                        if (currentLine.substring(i, i + keywordLength).equals("false")) {// If it contains define this
+                            System.out.println("contains false");
+                            if ((i + keywordLength - 1) == currentLine.length() - 1) {
+                                System.out.println("added false because of eol");
+                                addToken("FALSE", start);
+                                foundKeyword = true;
+                                i = i + keywordLength - 1;
+                            } else if (isTokenBreaker(currentLine.charAt(i + keywordLength))) {
+                                System.out.println("added false because of tokenBreaker");
+                                addToken("FALSE", start);
+                                foundKeyword = true;
+                                i = i + keywordLength - 1;
+                            }
+                        }
+                    }
+
+                    if (currentLine.length() - 1 == i) {// This prevents error from single characters
+                        addToken("IDENTIFIER", start);
+                        foundKeyword = true;
+                    }
+                    if (!foundKeyword) {
+                        do {
+
+                            i++;
+                            character = currentLine.charAt(i);
+                            System.out.print(character);
+
+                        } while (isRestOfIdentifier(character) && !(i == currentLine.length() - 1));
+                        System.out.println();
+
+                        if (i == currentLine.length() - 1) {
+                            addToken("IDENTIFIER", start);
+                            System.out.println("starting loop again at " + i);
+                        } else if (isTokenBreaker(character)) {
+                            addToken("IDENTIFIER", start);
+                            System.out.println("starting loop again at " + i);
+                            i--;
+                        } else {
+                            announceError(currentLine.substring(start, i));
+                            return;
+
+                        }
+
+                    }
+
+                    foundKeyword = false;
+
+                    System.out.println();
+                }
+            
+            }
+
+
+            //END OF IF STATEMENTS ---------------------------------------------------
+            j++;
             // Prints the token if the program didnt stop due to errors.
             printArrayList();
 
         }
     }
 
+    public static boolean isStartOfIdentifier(char c){
+        if (c == ' '){
+            return false;
+        }   
+
+        if ((c == '!') || (c == '*') || (c == '/') || (c == ':') || (c == '<') || (c == '=') || (c == '>') || (c == '?')){
+            return true;
+        } else if (isLetter(c)){
+            return true;
+        }
+        return false;
+    }
+
     public static boolean isRestOfIdentifier(char c) {
         int i = (int) c;
-        if ((i >= 97) && (i <= 122)) {
+
+        if (c == ' ') {
+            return false;
+        }
+        if (isLetter(c)) {
             // System.out.println("ascii = " + i);
             // System.out.println("i am a letter, " + c);
             return true;
@@ -195,9 +535,19 @@ class Main {
         }
     }
 
+    public static boolean isLetter(char c){
+        int i = (int) c;
+        if ((i >= 97) && (i <= 122)) {
+            // System.out.println("ascii = " + i);
+            // System.out.println("i am a letter, " + c);
+            return true;
+        }
+        return false;
+    }
+
     public static boolean isTokenBreaker(char c) {
         if ((c == '\'') || (c == '\"') || (c == '(') || (c == ')') || (c == '[') || (c == ']') || (c == '{')
-                || (c == '}') || (c == ' ')) {
+                || (c == '}') || (c == ' ') || (c == '~')) {
             return true;
         }
         return false;
