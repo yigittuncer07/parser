@@ -54,7 +54,7 @@ class Main {
                     start = i;// This is to remember where the string starts
 
                     if (i == currentLine.length() - 1) {// " cannot be at the end of the line
-                        announceError("\"", i);
+                        announceError("\"", i, false);
                         return;
                     }
                     do {// This loops until it finds a " or EOL
@@ -69,7 +69,7 @@ class Main {
                                 if (!(i == currentLine.length() - 1)) {
                                     i++;
                                 } else {
-                                    announceError(currentLine.substring(start, i + 1), start);
+                                    announceError(currentLine.substring(start, i + 1), start, false);
                                     return;
                                 }
                             }
@@ -80,17 +80,17 @@ class Main {
                     if (character == '"') {// If the last char read isnt a ", anounce error
                         addToken("STRING", start);
                     } else {
-                        announceError(currentLine.substring(start, i + 1), start);
+                        announceError(currentLine.substring(start, i + 1), start, false);
                         return;
                     }
                 } else if (character == '\'') {
                     start = i;
 
                     if (i == currentLine.length() - 1) { // " cannot be at the end of the line
-                        announceError("\'",i);
+                        announceError("\'", i, false);
                         return;
                     } else if (i == currentLine.length() - 2) {
-                        announceError(currentLine.substring(i, i + 2),i);
+                        announceError(currentLine.substring(i, i + 2), i, false);
                         return;
                     }
 
@@ -113,13 +113,17 @@ class Main {
                             addToken("CHAR", start);
 
                         } else {
-                            announceError(currentLine.substring(start, i), start);
+                            announceError(currentLine.substring(start, i), start, false);
                             return;
                         }
                     }
                 } else if (character == 'd') {
                     start = i;
                     keywordLength = 6;
+                    if (currentLine.length() - 1 == i) {// This prevents error from single characters
+                        addToken("IDENTIFIER", start);
+                        foundKeyword = true;
+                    }
                     if (currentLine.length() - i > keywordLength - 1) {
                         System.out.println("long enough");
                         if (currentLine.substring(i, i + keywordLength).equals("define")) {// If it contains define this
@@ -137,10 +141,7 @@ class Main {
                             }
                         }
                     }
-                    if (currentLine.length() - 1 == i) {// This prevents error from single characters
-                        addToken("IDENTIFIER", start);
-                        foundKeyword = true;
-                    }
+                    
                     if (!foundKeyword) {
                         do {
 
@@ -157,7 +158,7 @@ class Main {
                         } else if (i == currentLine.length() - 1 && isRestOfIdentifier(character)) {
                             addToken("IDENTIFIER", start);
                         } else {
-                            announceError(currentLine.substring(start, i), start);
+                            announceError(currentLine.substring(start, i), start, false);
                             return;
 
                         }
@@ -171,6 +172,10 @@ class Main {
                 } else if (character == 'l') {
                     start = i;
                     keywordLength = 3;
+                    if (currentLine.length() - 1 == i) {// This prevents error from single characters
+                        addToken("IDENTIFIER", start);
+                        foundKeyword = true;
+                    }
                     if (currentLine.length() - i > keywordLength - 1) {
                         System.out.println("long enough");
                         if (currentLine.substring(i, i + keywordLength).equals("let")) {// If it contains define this
@@ -188,10 +193,7 @@ class Main {
                             }
                         }
                     }
-                    if (currentLine.length() - 1 == i) {// This prevents error from single characters
-                        addToken("IDENTIFIER", start);
-                        foundKeyword = true;
-                    }
+                    
                     if (!foundKeyword) {
                         do {
 
@@ -208,7 +210,7 @@ class Main {
                         } else if (i == currentLine.length() - 1 && isRestOfIdentifier(character)) {
                             addToken("IDENTIFIER", start);
                         } else {
-                            announceError(currentLine.substring(start, i), start);
+                            announceError(currentLine.substring(start, i), start, false);
                             return;
 
                         }
@@ -222,6 +224,10 @@ class Main {
                 } else if (character == 'c') {
                     start = i;
                     keywordLength = 4;
+                    if (currentLine.length() - 1 == i) {// This prevents error from single characters
+                        addToken("IDENTIFIER", start);
+                        foundKeyword = true;
+                    }
                     if (currentLine.length() - i > keywordLength - 1) {
                         System.out.println("long enough");
                         if (currentLine.substring(i, i + keywordLength).equals("cond")) {// If it contains define this
@@ -239,10 +245,7 @@ class Main {
                             }
                         }
                     }
-                    if (currentLine.length() - 1 == i) {// This prevents error from single characters
-                        addToken("IDENTIFIER", start);
-                        foundKeyword = true;
-                    }
+                    
                     if (!foundKeyword) {
                         do {
 
@@ -259,7 +262,7 @@ class Main {
                         } else if (i == currentLine.length() - 1 && isRestOfIdentifier(character)) {
                             addToken("IDENTIFIER", start);
                         } else {
-                            announceError(currentLine.substring(start, i), start);
+                            announceError(currentLine.substring(start, i), start, false);
                             return;
 
                         }
@@ -272,6 +275,10 @@ class Main {
                 } else if (character == 'i') {
                     start = i;
                     keywordLength = 2;
+                    if (currentLine.length() - 1 == i) {// This prevents error from single characters
+                        addToken("IDENTIFIER", start);
+                        foundKeyword = true;
+                    }
                     if (currentLine.length() - i > keywordLength - 1) {
                         System.out.println("long enough");
                         if (currentLine.substring(i, i + keywordLength).equals("if")) {// If it contains define this
@@ -289,10 +296,7 @@ class Main {
                             }
                         }
                     }
-                    if (currentLine.length() - 1 == i) {// This prevents error from single characters
-                        addToken("IDENTIFIER", start);
-                        foundKeyword = true;
-                    }
+                    
                     if (!foundKeyword) {
                         do {
 
@@ -309,7 +313,7 @@ class Main {
                         } else if (i == currentLine.length() - 1 && isRestOfIdentifier(character)) {
                             addToken("IDENTIFIER", start);
                         } else {
-                            announceError(currentLine.substring(start, i), start);
+                            announceError(currentLine.substring(start, i), start, false);
                             return;
 
                         }
@@ -322,6 +326,10 @@ class Main {
                 } else if (character == 'b') {
                     start = i;
                     keywordLength = 5;
+                    if (currentLine.length() - 1 == i) {// This prevents error from single characters
+                        addToken("IDENTIFIER", start);
+                        foundKeyword = true;
+                    }
                     if (currentLine.length() - i > keywordLength - 1) {
                         System.out.println("long enough");
                         if (currentLine.substring(i, i + keywordLength).equals("begin")) {// If it contains define this
@@ -340,10 +348,7 @@ class Main {
                         }
                     }
 
-                    if (currentLine.length() - 1 == i) {// This prevents error from single characters
-                        addToken("IDENTIFIER", start);
-                        foundKeyword = true;
-                    }
+                    
                     if (!foundKeyword) {
                         do {
 
@@ -360,7 +365,7 @@ class Main {
                         } else if (i == currentLine.length() - 1 && isRestOfIdentifier(character)) {
                             addToken("IDENTIFIER", start);
                         } else {
-                            announceError(currentLine.substring(start, i), start);
+                            announceError(currentLine.substring(start, i), start, false);
                             return;
 
                         }
@@ -373,6 +378,10 @@ class Main {
                 } else if (character == 't') {
                     start = i;
                     keywordLength = 4;
+                    if (currentLine.length() - 1 == i) {// This prevents error from single characters
+                        addToken("IDENTIFIER", start);
+                        foundKeyword = true;
+                    }
                     if (currentLine.length() - i > keywordLength - 1) {
                         System.out.println("long enough");
                         if (currentLine.substring(i, i + keywordLength).equals("true")) {// If it contains define this
@@ -391,10 +400,6 @@ class Main {
                         }
                     }
 
-                    if (currentLine.length() - 1 == i) {// This prevents error from single characters
-                        addToken("IDENTIFIER", start);
-                        foundKeyword = true;
-                    }
                     if (!foundKeyword) {
                         do {
 
@@ -411,7 +416,7 @@ class Main {
                         } else if (i == currentLine.length() - 1 && isRestOfIdentifier(character)) {
                             addToken("IDENTIFIER", start);
                         } else {
-                            announceError(currentLine.substring(start, i), start);
+                            announceError(currentLine.substring(start, i), start, false);
                             return;
 
                         }
@@ -424,6 +429,10 @@ class Main {
                 } else if (character == 'f') {
                     start = i;
                     keywordLength = 5;
+                    if (currentLine.length() - 1 == i) {// This prevents error from single characters
+                        addToken("IDENTIFIER", start);
+                        foundKeyword = true;
+                    }
                     if (currentLine.length() - i > keywordLength - 1) {
                         System.out.println("long enough");
                         if (currentLine.substring(i, i + keywordLength).equals("false")) {// If it contains define this
@@ -442,10 +451,7 @@ class Main {
                         }
                     }
 
-                    if (currentLine.length() - 1 == i) {// This prevents error from single characters
-                        addToken("IDENTIFIER", start);
-                        foundKeyword = true;
-                    }
+                    
                     if (!foundKeyword) {
                         do {
 
@@ -462,7 +468,7 @@ class Main {
                         } else if (i == currentLine.length() - 1 && isRestOfIdentifier(character)) {
                             addToken("IDENTIFIER", start);
                         } else {
-                            announceError(currentLine.substring(start, i), start);
+                            announceError(currentLine.substring(start, i), start, false);
                             return;
 
                         }
@@ -473,7 +479,6 @@ class Main {
 
                     System.out.println();
                 } else if (isStartOfIdentifier(character)) {
-                    System.out.println("Yeah this is the start of a character");
                     start = i;
                     if (currentLine.length() - 1 == i) {// This prevents error from single characters
                         addToken("IDENTIFIER", start);
@@ -482,7 +487,6 @@ class Main {
 
                         i++;
                         character = currentLine.charAt(i);
-                        System.out.print(character);
 
                     } while (isRestOfIdentifier(character) && !(i == currentLine.length() - 1));
 
@@ -494,13 +498,499 @@ class Main {
                     } else if (i == currentLine.length() - 1 && isRestOfIdentifier(character)) {
                         addToken("IDENTIFIER", start);
                     } else {
-                        announceError(currentLine.substring(start, i + 1), start);
+                        announceError(currentLine.substring(start, i + 1), start, false);
                         return;
 
                     }
                     System.out.println();
-                }
+                } else if (character == '0') {
+                    start = i;
+                    int temporary = i;
+                    if (i == currentLine.length() - 1) {
+                        addToken("NUMBER", start);
+                    } else if (isTokenBreaker(currentLine.charAt(++temporary))) {
+                        addToken("NUMBER", start);
+                    } else {
 
+                        i++;
+                        character = currentLine.charAt(i);
+                        if (character == 'x') {// For hexadecimal numbers
+                            if (i == currentLine.length() - 1) {// No such thing as 0x
+                                announceError("0", start, true);
+                                return;
+                            }
+                            do {
+
+                                i++;
+                                character = currentLine.charAt(i);
+
+                            } while (isRestOfHex(character) && !(i == currentLine.length() - 1));
+
+                            if (isTokenBreaker(character)) {
+                                i--;
+                                addToken("NUMBER", start);
+                            } else if (i == currentLine.length() - 1 && isRestOfHex(character)) {
+                                addToken("NUMBER", start);
+                            } else {
+                                announceError(currentLine.substring(start, i + 1), start, false);
+                                return;
+
+                            }
+
+                        } else if (character == 'b') {
+                            if (i == currentLine.length() - 1) {// No such thing as 0x
+                                announceError("0", start, true);
+                                return;
+                            }
+                            do {
+
+                                i++;
+                                character = currentLine.charAt(i);
+
+                            } while (isBin(character) && !(i == currentLine.length() - 1));
+
+                            if (isTokenBreaker(character)) {
+                                i--;
+                                addToken("NUMBER", start);
+                            } else if (i == currentLine.length() - 1 && isBin(character)) {
+                                addToken("NUMBER", start);
+                            } else {
+                                announceError(currentLine.substring(start, i + 1), start, false);
+                                return;
+
+                            }
+                        } else if (character == '.') {
+                            if (i == currentLine.length() - 1) {// No such thing as 0.
+                                announceError(".", start, true);
+                                return;
+                            }
+                            do {
+
+                                i++;
+                                character = currentLine.charAt(i);
+
+                            } while (isDecimal(character) && !(i == currentLine.length() - 1));
+
+                            if (character != 'e' && character != 'E') {
+                                if (isTokenBreaker(character)) {
+                                    i--;
+                                    addToken("NUMBER", start);
+                                } else if (i == currentLine.length() - 1 && isDecimal(character)) {
+                                    addToken("NUMBER", start);
+                                } else {
+                                    announceError(currentLine.substring(start, i + 1), start, false);
+                                    return;
+                                }
+                            } else {
+                                if (currentLine.length() - 1 == i) {
+                                    announceError("e", start, true);
+                                    return;
+                                }
+                                i++;
+                                character = currentLine.charAt(i);
+                                if (character == '-' || character == '+') {
+                                    if (i != currentLine.length() - 1) {
+                                        i++;
+                                        character = currentLine.charAt(i);
+                                    } else {
+                                        announceError("-", start, true);
+                                        return;
+                                    }
+
+                                }
+
+                                if (!isDecimal(character)) {
+                                    announceError("x", start, true);
+                                    return;
+                                }
+
+                                while (isDecimal(character) && !(i == currentLine.length() - 1)) {
+                                    i++;
+                                    character = currentLine.charAt(i);
+                                }
+
+                                if (isTokenBreaker(character)) {
+                                    i--;
+                                    addToken("NUMBER", start);
+                                } else if (i == currentLine.length() - 1 && isDecimal(character)) {
+                                    addToken("NUMBER", start);
+                                } else {
+                                    announceError(currentLine.substring(start, i + 1), start, false);
+                                    return;
+
+                                }
+                            }
+                        } else if (character == 'e' || character == 'E') {
+                            if (currentLine.length() - 1 == i) {
+                                announceError("e", start, true);
+                                return;
+                            }
+                            i++;
+                            character = currentLine.charAt(i);
+                            if (character == '-' || character == '+') {
+                                if (i != currentLine.length() - 1) {
+                                    i++;
+                                    character = currentLine.charAt(i);
+                                } else {
+                                    announceError("-", start, true);
+                                    return;
+                                }
+
+                            }
+
+                            if (!isDecimal(character)) {
+                                announceError("x", start, true);
+                                return;
+                            }
+
+                            while (isDecimal(character) && !(i == currentLine.length() - 1)) {
+                                i++;
+                                character = currentLine.charAt(i);
+                            }
+
+                            if (isTokenBreaker(character)) {
+                                i--;
+                                addToken("NUMBER", start);
+                            } else if (i == currentLine.length() - 1 && isDecimal(character)) {
+                                addToken("NUMBER", start);
+                            } else {
+                                announceError(currentLine.substring(start, i + 1), start, false);
+                                return;
+
+                            }
+                        } else if (isDecimal(character)) {
+
+                            while (isDecimal(character) && !(i == currentLine.length() - 1)) {
+                                i++;
+                                character = currentLine.charAt(i);
+                            }
+
+                            if (isTokenBreaker(character)) {
+                                i--;
+                                addToken("NUMBER", start);
+                            } else if (i == currentLine.length() - 1 && isDecimal(character)) {
+                                addToken("NUMBER", start);
+                            } else {
+                                announceError(currentLine.substring(start, i + 1), start, false);
+                                return;
+
+                            }
+                        } else {
+                            announceError("0", start, true);
+                            return;
+                        }
+                    }
+                } else if (character == '-' || character == '+') {
+                    start = i;
+                    
+                    if (i != currentLine.length() - 1) {
+                        i++;
+                        character = currentLine.charAt(i);
+                    } else {
+                        announceError("-", start, true);
+                        return;
+                    }
+                    while (isDecimal(character) && !(i == currentLine.length() - 1)) {
+                        i++;
+                        character = currentLine.charAt(i);
+                    }
+
+                    if (character != 'e' && character != 'E' && character != '.') {
+
+                        if (isTokenBreaker(character)) {
+                            i--;
+                            addToken("NUMBER", start);
+                        } else if (i == currentLine.length() - 1 && isDecimal(character)) {
+                            addToken("NUMBER", start);
+                        } else {
+                            announceError(currentLine.substring(start, i + 1), start, false);
+                            return;
+
+                        }
+                    } else if (character == 'e' || character == 'E') {
+                        if (currentLine.length() - 1 == i) {
+                            announceError("e", start, true);
+                            return;
+                        }
+                        i++;
+                        character = currentLine.charAt(i);
+                        if (character == '-' || character == '+') {
+                            if (i != currentLine.length() - 1) {
+                                i++;
+                                character = currentLine.charAt(i);
+                            } else {
+                                announceError("-", start, true);
+                                return;
+                            }
+
+                        }
+
+                        if (!isDecimal(character)) {
+                            announceError("x", start, true);
+                            return;
+                        }
+
+                        while (isDecimal(character) && !(i == currentLine.length() - 1)) {
+                            i++;
+                            character = currentLine.charAt(i);
+                        }
+
+                        if (isTokenBreaker(character)) {
+                            i--;
+                            addToken("NUMBER", start);
+                        } else if (i == currentLine.length() - 1 && isDecimal(character)) {
+                            addToken("NUMBER", start);
+                        } else {
+                            announceError(currentLine.substring(start, i + 1), start, false);
+                            return;
+
+                        }
+                    } else if (character == '.') {
+                        if (i == currentLine.length() - 1) {// No such thing as 0.
+                            announceError(".", start, true);
+                            return;
+                        }
+                        do {
+
+                            i++;
+                            character = currentLine.charAt(i);
+
+                        } while (isDecimal(character) && !(i == currentLine.length() - 1));
+
+                        if (character != 'e' && character != 'E') {
+                            if (isTokenBreaker(character)) {
+                                i--;
+                                addToken("NUMBER", start);
+                            } else if (i == currentLine.length() - 1 && isDecimal(character)) {
+                                addToken("NUMBER", start);
+                            } else {
+                                announceError(currentLine.substring(start, i + 1), start, false);
+                                return;
+                            }
+                        } else {
+                            if (currentLine.length() - 1 == i) {
+                                announceError("e", start, true);
+                                return;
+                            }
+                            i++;
+                            character = currentLine.charAt(i);
+                            if (character == '-' || character == '+') {
+                                if (i != currentLine.length() - 1) {
+                                    i++;
+                                    character = currentLine.charAt(i);
+                                } else {
+                                    announceError("-", start, true);
+                                    return;
+                                }
+
+                            }
+
+                            if (!isDecimal(character)) {
+                                announceError("x", start, true);
+                                return;
+                            }
+
+                            while (isDecimal(character) && !(i == currentLine.length() - 1)) {
+                                i++;
+                                character = currentLine.charAt(i);
+                            }
+
+                            if (isTokenBreaker(character)) {
+                                i--;
+                                addToken("NUMBER", start);
+                            } else if (i == currentLine.length() - 1 && isDecimal(character)) {
+                                addToken("NUMBER", start);
+                            } else {
+                                announceError(currentLine.substring(start, i + 1), start, false);
+                                return;
+
+                            }
+                        }
+                    }
+
+                } else if (isDecimal(character)) {
+                    start = i;
+
+                    while (isDecimal(character) && !(i == currentLine.length() - 1)) {
+                        i++;
+                        character = currentLine.charAt(i);
+                    }
+
+                    if (character != 'e' && character != 'E' && character != '.') {
+
+                        if (isTokenBreaker(character)) {
+                            i--;
+                            addToken("NUMBER", start);
+                        } else if (i == currentLine.length() - 1 && isDecimal(character)) {
+                            addToken("NUMBER", start);
+                        } else {
+                            announceError(currentLine.substring(start, i + 1), start, false);
+                            return;
+
+                        }
+                    } else if (character == 'e' || character == 'E') {
+                        if (currentLine.length() - 1 == i) {
+                            announceError("e", start, true);
+                            return;
+                        }
+                        i++;
+                        character = currentLine.charAt(i);
+                        if (character == '-' || character == '+') {
+                            if (i != currentLine.length() - 1) {
+                                i++;
+                                character = currentLine.charAt(i);
+                            } else {
+                                announceError("-", start, true);
+                                return;
+                            }
+
+                        }
+
+                        if (!isDecimal(character)) {
+                            announceError("x", start, true);
+                            return;
+                        }
+
+                        while (isDecimal(character) && !(i == currentLine.length() - 1)) {
+                            i++;
+                            character = currentLine.charAt(i);
+                        }
+
+                        if (isTokenBreaker(character)) {
+                            i--;
+                            addToken("NUMBER", start);
+                        } else if (i == currentLine.length() - 1 && isDecimal(character)) {
+                            addToken("NUMBER", start);
+                        } else {
+                            announceError(currentLine.substring(start, i + 1), start, false);
+                            return;
+
+                        }
+                    } else if (character == '.') {
+                        if (i == currentLine.length() - 1) {// No such thing as 0.
+                            announceError(".", start, true);
+                            return;
+                        }
+                        do {
+
+                            i++;
+                            character = currentLine.charAt(i);
+
+                        } while (isDecimal(character) && !(i == currentLine.length() - 1));
+
+                        if (character != 'e' && character != 'E') {
+                            if (isTokenBreaker(character)) {
+                                i--;
+                                addToken("NUMBER", start);
+                            } else if (i == currentLine.length() - 1 && isDecimal(character)) {
+                                addToken("NUMBER", start);
+                            } else {
+                                announceError(currentLine.substring(start, i + 1), start, false);
+                                return;
+                            }
+                        } else {
+                            if (currentLine.length() - 1 == i) {
+                                announceError("e", start, true);
+                                return;
+                            }
+                            i++;
+                            character = currentLine.charAt(i);
+                            if (character == '-' || character == '+') {
+                                if (i != currentLine.length() - 1) {
+                                    i++;
+                                    character = currentLine.charAt(i);
+                                } else {
+                                    announceError("-", start, true);
+                                    return;
+                                }
+
+                            }
+
+                            if (!isDecimal(character)) {
+                                announceError("x", start, true);
+                                return;
+                            }
+
+                            while (isDecimal(character) && !(i == currentLine.length() - 1)) {
+                                i++;
+                                character = currentLine.charAt(i);
+                            }
+
+                            if (isTokenBreaker(character)) {
+                                i--;
+                                addToken("NUMBER", start);
+                            } else if (i == currentLine.length() - 1 && isDecimal(character)) {
+                                addToken("NUMBER", start);
+                            } else {
+                                announceError(currentLine.substring(start, i + 1), start, false);
+                                return;
+
+                            }
+                        }
+                    }
+                } else if (character == '.') {
+                    start = i;
+                    if (i == currentLine.length() - 1) {// No such thing as 0.
+                        announceError(".", start, true);
+                        return;
+                    }
+                    do {
+
+                        i++;
+                        character = currentLine.charAt(i);
+
+                    } while (isDecimal(character) && !(i == currentLine.length() - 1));
+
+                    if (character != 'e' && character != 'E') {
+                        if (isTokenBreaker(character)) {
+                            i--;
+                            addToken("NUMBER", start);
+                        } else if (i == currentLine.length() - 1 && isDecimal(character)) {
+                            addToken("NUMBER", start);
+                        } else {
+                            announceError(currentLine.substring(start, i + 1), start, false);
+                            return;
+                        }
+                    } else {
+                        if (currentLine.length() - 1 == i) {
+                            announceError("e", start, true);
+                            return;
+                        }
+                        i++;
+                        character = currentLine.charAt(i);
+                        if (character == '-' || character == '+') {
+                            if (i != currentLine.length() - 1) {
+                                i++;
+                                character = currentLine.charAt(i);
+                            } else {
+                                announceError("-", start, true);
+                                return;
+                            }
+
+                        }
+
+                        if (!isDecimal(character)) {
+                            announceError("x", start, true);
+                            return;
+                        }
+
+                        while (isDecimal(character) && !(i == currentLine.length() - 1)) {
+                            i++;
+                            character = currentLine.charAt(i);
+                        }
+
+                        if (isTokenBreaker(character)) {
+                            i--;
+                            addToken("NUMBER", start);
+                        } else if (i == currentLine.length() - 1 && isDecimal(character)) {
+                            addToken("NUMBER", start);
+                        } else {
+                            announceError(currentLine.substring(start, i + 1), start, false);
+                            return;
+
+                        }
+                    }
+                }
             }
 
             // END OF IF STATEMENTS ---------------------------------------------------
@@ -509,6 +999,36 @@ class Main {
             printArrayList();
 
         }
+    }
+
+    public static boolean isRestOfHex(char c) {
+        int ascii = (int) c;
+        if (isDecimal(c)) {
+            return true;
+        } else if ((ascii >= 97) && (ascii <= 102)) {
+            return true;
+
+        } else if ((ascii >= 65) && (ascii <= 70)) {
+            return true;
+
+        } else {
+            return false;
+        }
+    }
+
+    public static boolean isDecimal(char c) {
+        int ascii = (int) c;
+        if ((ascii >= 48) && (ascii <= 57)) {
+            return true;
+        }
+        return false;
+    }
+
+    public static boolean isBin(char c) {
+        if (c == '1' || c == '0') {
+            return true;
+        }
+        return false;
     }
 
     public static boolean isStartOfIdentifier(char c) {
@@ -559,10 +1079,8 @@ class Main {
     public static boolean isTokenBreaker(char c) {
         if ((c == '\'') || (c == '\"') || (c == '(') || (c == ')') || (c == '[') || (c == ']') || (c == '{')
                 || (c == '}') || (c == ' ') || (c == '~')) {
-            System.out.println(c + " is a token breaker");
             return true;
         } else {
-            System.out.println(c + " is NOT a token breaker");
             return false;
         }
 
@@ -580,14 +1098,13 @@ class Main {
         writer.close();
     }
 
-    public static void announceError(String lex, int index) throws FileNotFoundException {
+    public static void announceError(String lex, int index, boolean state) throws FileNotFoundException {
         int tempI = index;
-        if (lex.length() != 1){
-            while ((tempI < currentLine.length() - 1) && (currentLine.charAt(tempI) != ' ')){
+        if (lex.length() != 1 || state == true) {
+            while ((tempI < currentLine.length() - 1) && (currentLine.charAt(tempI) != ' ')) {
                 tempI++;
             }
         }
-        System.out.println("i = " + index + " tempI = " + tempI);
         lex = currentLine.substring(index, tempI + 1);
 
         PrintWriter writer = new PrintWriter("output.txt");
