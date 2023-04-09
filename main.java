@@ -4,6 +4,8 @@ import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.Scanner;
 
+import javax.security.auth.Subject;
+
 class Main {
 
     static ArrayList<String> tokens = new ArrayList<>();
@@ -68,6 +70,7 @@ class Main {
                             if (currentLine.charAt(prev) == '\\') {
                                 if (!(i == currentLine.length() - 1)) {
                                     i++;
+                                    character = currentLine.charAt(i);
                                 } else {
                                     announceError(currentLine.substring(start, i + 1), start, false);
                                     return;
@@ -98,13 +101,24 @@ class Main {
                     character = currentLine.charAt(i);
 
                     if (character == '\\') {
-                        // i++;
-                        // character = currentLine.charAt(i);
-
-                        // if (character == '\''){
-                        // addToken("CHAR", start);
-
-                        // }
+                        if (i == currentLine.length() - 2){
+                            announceError("\'", i, true);
+                            return;
+                        }
+                        i++;
+                        character = currentLine.charAt(i);
+                        if (character != '\'') {
+                            announceError("\'", i, true);
+                            return;
+                        }
+                        i++;
+                        character = currentLine.charAt(i);
+                        if (character != '\'') {
+                            announceError("\'", i, true);
+                            return;
+                        }
+                        addToken("CHAR", start);
+                        
                     } else {
                         i++;
                         character = currentLine.charAt(i);
