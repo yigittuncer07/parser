@@ -1,6 +1,7 @@
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.PrintWriter;
+import java.lang.reflect.AnnotatedArrayType;
 import java.util.ArrayList;
 import java.util.Scanner;
 
@@ -1004,6 +1005,11 @@ class Main {
 
                         }
                     }
+                } else if (!isTokenBreaker(character)){
+                    String error;
+                    error = Character.toString(character);
+                    announceError(error, i, false);
+                    return;
                 }
             }
 
@@ -1092,7 +1098,7 @@ class Main {
 
     public static boolean isTokenBreaker(char c) {
         if ((c == '\'') || (c == '\"') || (c == '(') || (c == ')') || (c == '[') || (c == ']') || (c == '{')
-                || (c == '}') || (c == ' ') || (c == '~')) {
+                || (c == '}') || (c == ' ') || (c == '~') || (c== '\t')) {
             return true;
         } else {
             return false;
