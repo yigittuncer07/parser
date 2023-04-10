@@ -1,6 +1,7 @@
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.PrintWriter;
+import java.net.SocketTimeoutException;
 import java.util.ArrayList;
 import java.util.Scanner;
 
@@ -1059,6 +1060,9 @@ class Main {
             while ((tempI < currentLine.length() - 1) && (currentLine.charAt(tempI) != ' ')) {
                 tempI++;
             }
+        }
+        if (currentLine.charAt(tempI) == ' '){
+            tempI--;
         }
         lex = currentLine.substring(index, tempI + 1);
 
