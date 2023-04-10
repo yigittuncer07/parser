@@ -1,7 +1,6 @@
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.PrintWriter;
-import java.net.SocketTimeoutException;
 import java.util.ArrayList;
 import java.util.Scanner;
 
@@ -957,7 +956,8 @@ class Main {
             // END OF IF STATEMENTS ---------------------------------------------------
             j++;
             // Prints the token if the program didnt stop due to errors.
-            printArrayList();
+            printArrayListToFile();
+            printArrayListToTerminal();
 
         }
     }
@@ -1046,12 +1046,18 @@ class Main {
         tokens.add(token + " " + (j + 1) + ":" + (index + 1));
     }
 
-    public static void printArrayList() throws FileNotFoundException {
+    public static void printArrayListToFile() throws FileNotFoundException {
         PrintWriter writer = new PrintWriter("output.txt");
         for (String str : tokens) {
             writer.println(str);
         }
         writer.close();
+    }
+
+    public static void printArrayListToTerminal(){
+        for (String str : tokens) {
+            System.out.println(str);
+        }
     }
 
     public static void announceError(String lex, int index, boolean state) throws FileNotFoundException {
