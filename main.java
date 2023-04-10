@@ -1,11 +1,8 @@
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.PrintWriter;
-import java.lang.reflect.AnnotatedArrayType;
 import java.util.ArrayList;
 import java.util.Scanner;
-
-import javax.security.auth.Subject;
 
 class Main {
 
@@ -102,7 +99,7 @@ class Main {
                     character = currentLine.charAt(i);
 
                     if (character == '\\') {
-                        if (i == currentLine.length() - 2){
+                        if (i == currentLine.length() - 2) {
                             announceError("\'", i, true);
                             return;
                         }
@@ -119,7 +116,7 @@ class Main {
                             return;
                         }
                         addToken("CHAR", start);
-                        
+
                     } else {
                         i++;
                         character = currentLine.charAt(i);
@@ -140,32 +137,26 @@ class Main {
                         foundKeyword = true;
                     }
                     if (currentLine.length() - i > keywordLength - 1) {
-                        System.out.println("long enough");
                         if (currentLine.substring(i, i + keywordLength).equals("define")) {// If it contains define this
-                            System.out.println("contains define");
                             if ((i + keywordLength - 1) == currentLine.length() - 1) {
-                                System.out.println("added define because of eol");
                                 addToken("DEFINE", start);
                                 foundKeyword = true;
                                 i = i + keywordLength - 1;
                             } else if (isTokenBreaker(currentLine.charAt(i + keywordLength))) {
-                                System.out.println("added define because of tokenBreaker");
                                 addToken("DEFINE", start);
                                 foundKeyword = true;
                                 i = i + keywordLength - 1;
                             }
                         }
                     }
-                    
+
                     if (!foundKeyword) {
                         do {
 
                             i++;
                             character = currentLine.charAt(i);
-                            System.out.print(character);
 
                         } while (isRestOfIdentifier(character) && !(i == currentLine.length() - 1));
-                        System.out.println();
 
                         if (isTokenBreaker(character)) {
                             i--;
@@ -181,8 +172,6 @@ class Main {
                     }
 
                     foundKeyword = false;
-
-                    System.out.println();
 
                 } else if (character == 'l') {
                     start = i;
@@ -192,32 +181,26 @@ class Main {
                         foundKeyword = true;
                     }
                     if (currentLine.length() - i > keywordLength - 1) {
-                        System.out.println("long enough");
                         if (currentLine.substring(i, i + keywordLength).equals("let")) {// If it contains define this
-                            System.out.println("contains let");
                             if ((i + keywordLength - 1) == currentLine.length() - 1) {
-                                System.out.println("added let because of eol");
                                 addToken("LET", start);
                                 foundKeyword = true;
                                 i = i + keywordLength - 1;
                             } else if (isTokenBreaker(currentLine.charAt(i + keywordLength))) {
-                                System.out.println("added define because of tokenBreaker");
                                 addToken("LET", start);
                                 foundKeyword = true;
                                 i = i + keywordLength - 1;
                             }
                         }
                     }
-                    
+
                     if (!foundKeyword) {
                         do {
 
                             i++;
                             character = currentLine.charAt(i);
-                            System.out.print(character);
 
                         } while (isRestOfIdentifier(character) && !(i == currentLine.length() - 1));
-                        System.out.println();
 
                         if (isTokenBreaker(character)) {
                             i--;
@@ -233,8 +216,6 @@ class Main {
                     }
 
                     foundKeyword = false;
-
-                    System.out.println();
 
                 } else if (character == 'c') {
                     start = i;
@@ -244,32 +225,26 @@ class Main {
                         foundKeyword = true;
                     }
                     if (currentLine.length() - i > keywordLength - 1) {
-                        System.out.println("long enough");
                         if (currentLine.substring(i, i + keywordLength).equals("cond")) {// If it contains define this
-                            System.out.println("contains cond");
                             if ((i + keywordLength - 1) == currentLine.length() - 1) {
-                                System.out.println("added cond because of eol");
                                 addToken("COND", start);
                                 foundKeyword = true;
                                 i = i + keywordLength - 1;
                             } else if (isTokenBreaker(currentLine.charAt(i + keywordLength))) {
-                                System.out.println("added define because of tokenBreaker");
                                 addToken("COND", start);
                                 foundKeyword = true;
                                 i = i + keywordLength - 1;
                             }
                         }
                     }
-                    
+
                     if (!foundKeyword) {
                         do {
 
                             i++;
                             character = currentLine.charAt(i);
-                            System.out.print(character);
 
                         } while (isRestOfIdentifier(character) && !(i == currentLine.length() - 1));
-                        System.out.println();
 
                         if (isTokenBreaker(character)) {
                             i--;
@@ -286,7 +261,6 @@ class Main {
 
                     foundKeyword = false;
 
-                    System.out.println();
                 } else if (character == 'i') {
                     start = i;
                     keywordLength = 2;
@@ -295,32 +269,26 @@ class Main {
                         foundKeyword = true;
                     }
                     if (currentLine.length() - i > keywordLength - 1) {
-                        System.out.println("long enough");
                         if (currentLine.substring(i, i + keywordLength).equals("if")) {// If it contains define this
-                            System.out.println("contains if");
                             if ((i + keywordLength - 1) == currentLine.length() - 1) {
-                                System.out.println("added if because of eol");
                                 addToken("IF", start);
                                 foundKeyword = true;
                                 i = i + keywordLength - 1;
                             } else if (isTokenBreaker(currentLine.charAt(i + keywordLength))) {
-                                System.out.println("added if because of tokenBreaker");
                                 addToken("IF", start);
                                 foundKeyword = true;
                                 i = i + keywordLength - 1;
                             }
                         }
                     }
-                    
+
                     if (!foundKeyword) {
                         do {
 
                             i++;
                             character = currentLine.charAt(i);
-                            System.out.print(character);
 
                         } while (isRestOfIdentifier(character) && !(i == currentLine.length() - 1));
-                        System.out.println();
 
                         if (isTokenBreaker(character)) {
                             i--;
@@ -336,8 +304,6 @@ class Main {
                     }
 
                     foundKeyword = false;
-
-                    System.out.println();
                 } else if (character == 'b') {
                     start = i;
                     keywordLength = 5;
@@ -346,16 +312,12 @@ class Main {
                         foundKeyword = true;
                     }
                     if (currentLine.length() - i > keywordLength - 1) {
-                        System.out.println("long enough");
                         if (currentLine.substring(i, i + keywordLength).equals("begin")) {// If it contains define this
-                            System.out.println("contains begin");
                             if ((i + keywordLength - 1) == currentLine.length() - 1) {
-                                System.out.println("added begin because of eol");
                                 addToken("BEGIN", start);
                                 foundKeyword = true;
                                 i = i + keywordLength - 1;
                             } else if (isTokenBreaker(currentLine.charAt(i + keywordLength))) {
-                                System.out.println("added begin because of tokenBreaker");
                                 addToken("BEGIN", start);
                                 foundKeyword = true;
                                 i = i + keywordLength - 1;
@@ -363,16 +325,13 @@ class Main {
                         }
                     }
 
-                    
                     if (!foundKeyword) {
                         do {
 
                             i++;
                             character = currentLine.charAt(i);
-                            System.out.print(character);
 
                         } while (isRestOfIdentifier(character) && !(i == currentLine.length() - 1));
-                        System.out.println();
 
                         if (isTokenBreaker(character)) {
                             i--;
@@ -389,7 +348,6 @@ class Main {
 
                     foundKeyword = false;
 
-                    System.out.println();
                 } else if (character == 't') {
                     start = i;
                     keywordLength = 4;
@@ -398,16 +356,12 @@ class Main {
                         foundKeyword = true;
                     }
                     if (currentLine.length() - i > keywordLength - 1) {
-                        System.out.println("long enough");
                         if (currentLine.substring(i, i + keywordLength).equals("true")) {// If it contains define this
-                            System.out.println("contains true");
                             if ((i + keywordLength - 1) == currentLine.length() - 1) {
-                                System.out.println("added true because of eol");
                                 addToken("TRUE", start);
                                 foundKeyword = true;
                                 i = i + keywordLength - 1;
                             } else if (isTokenBreaker(currentLine.charAt(i + keywordLength))) {
-                                System.out.println("added true because of tokenBreaker");
                                 addToken("TRUE", start);
                                 foundKeyword = true;
                                 i = i + keywordLength - 1;
@@ -420,10 +374,8 @@ class Main {
 
                             i++;
                             character = currentLine.charAt(i);
-                            System.out.print(character);
 
                         } while (isRestOfIdentifier(character) && !(i == currentLine.length() - 1));
-                        System.out.println();
 
                         if (isTokenBreaker(character)) {
                             i--;
@@ -440,7 +392,6 @@ class Main {
 
                     foundKeyword = false;
 
-                    System.out.println();
                 } else if (character == 'f') {
                     start = i;
                     keywordLength = 5;
@@ -449,16 +400,12 @@ class Main {
                         foundKeyword = true;
                     }
                     if (currentLine.length() - i > keywordLength - 1) {
-                        System.out.println("long enough");
                         if (currentLine.substring(i, i + keywordLength).equals("false")) {// If it contains define this
-                            System.out.println("contains false");
                             if ((i + keywordLength - 1) == currentLine.length() - 1) {
-                                System.out.println("added false because of eol");
                                 addToken("FALSE", start);
                                 foundKeyword = true;
                                 i = i + keywordLength - 1;
                             } else if (isTokenBreaker(currentLine.charAt(i + keywordLength))) {
-                                System.out.println("added false because of tokenBreaker");
                                 addToken("FALSE", start);
                                 foundKeyword = true;
                                 i = i + keywordLength - 1;
@@ -466,16 +413,13 @@ class Main {
                         }
                     }
 
-                    
                     if (!foundKeyword) {
                         do {
 
                             i++;
                             character = currentLine.charAt(i);
-                            System.out.print(character);
 
                         } while (isRestOfIdentifier(character) && !(i == currentLine.length() - 1));
-                        System.out.println();
 
                         if (isTokenBreaker(character)) {
                             i--;
@@ -492,7 +436,6 @@ class Main {
 
                     foundKeyword = false;
 
-                    System.out.println();
                 } else if (isStartOfIdentifier(character)) {
                     start = i;
                     if (currentLine.length() - 1 == i) {// This prevents error from single characters
@@ -505,8 +448,6 @@ class Main {
 
                     } while (isRestOfIdentifier(character) && !(i == currentLine.length() - 1));
 
-                    System.out.println();
-
                     if (isTokenBreaker(character)) {
                         i--;
                         addToken("IDENTIFIER", start);
@@ -517,7 +458,6 @@ class Main {
                         return;
 
                     }
-                    System.out.println();
                 } else if (character == '0') {
                     start = i;
                     int temporary = i;
@@ -697,82 +637,20 @@ class Main {
                     }
                 } else if (character == '-' || character == '+') {
                     start = i;
-                    
-                    if (i != currentLine.length() - 1) {
-                        i++;
-                        character = currentLine.charAt(i);
+
+                    if (i == currentLine.length() - 1) {
+                        addToken("IDENTIFIER", start);
+                    } else if (isTokenBreaker(currentLine.charAt(++i))) {
+                        i--;
+                        addToken("IDENTIFIER", start);
                     } else {
-                        announceError("-", start, true);
-                        return;
-                    }
-                    while (isDecimal(character) && !(i == currentLine.length() - 1)) {
-                        i++;
-                        character = currentLine.charAt(i);
-                    }
-
-                    if (character != 'e' && character != 'E' && character != '.') {
-
-                        if (isTokenBreaker(character)) {
-                            i--;
-                            addToken("NUMBER", start);
-                        } else if (i == currentLine.length() - 1 && isDecimal(character)) {
-                            addToken("NUMBER", start);
-                        } else {
-                            announceError(currentLine.substring(start, i + 1), start, false);
-                            return;
-
-                        }
-                    } else if (character == 'e' || character == 'E') {
-                        if (currentLine.length() - 1 == i) {
-                            announceError("e", start, true);
-                            return;
-                        }
-                        i++;
-                        character = currentLine.charAt(i);
-                        if (character == '-' || character == '+') {
-                            if (i != currentLine.length() - 1) {
-                                i++;
-                                character = currentLine.charAt(i);
-                            } else {
-                                announceError("-", start, true);
-                                return;
-                            }
-
-                        }
-
-                        if (!isDecimal(character)) {
-                            announceError("x", start, true);
-                            return;
-                        }
-
+                        character = currentLine.charAt(++i);
                         while (isDecimal(character) && !(i == currentLine.length() - 1)) {
                             i++;
                             character = currentLine.charAt(i);
                         }
 
-                        if (isTokenBreaker(character)) {
-                            i--;
-                            addToken("NUMBER", start);
-                        } else if (i == currentLine.length() - 1 && isDecimal(character)) {
-                            addToken("NUMBER", start);
-                        } else {
-                            announceError(currentLine.substring(start, i + 1), start, false);
-                            return;
-
-                        }
-                    } else if (character == '.') {
-                        if (i == currentLine.length() - 1) {// No such thing as 0.
-                            announceError(".", start, true);
-                            return;
-                        }
-                        do {
-
-                            i++;
-                            character = currentLine.charAt(i);
-
-                        } while (isDecimal(character) && !(i == currentLine.length() - 1));
-
-                        if (character != 'e' && character != 'E') {
+                        if (character != 'e' && character != 'E' && character != '.') {
                             if (isTokenBreaker(character)) {
                                 i--;
                                 addToken("NUMBER", start);
@@ -781,8 +659,9 @@ class Main {
                             } else {
                                 announceError(currentLine.substring(start, i + 1), start, false);
                                 return;
+
                             }
-                        } else {
+                        } else if (character == 'e' || character == 'E') {
                             if (currentLine.length() - 1 == i) {
                                 announceError("e", start, true);
                                 return;
@@ -819,6 +698,67 @@ class Main {
                                 announceError(currentLine.substring(start, i + 1), start, false);
                                 return;
 
+                            }
+                        } else if (character == '.') {
+                            if (i == currentLine.length() - 1) {// No such thing as 0.
+                                announceError(".", start, true);
+                                return;
+                            }
+                            do {
+
+                                i++;
+                                character = currentLine.charAt(i);
+
+                            } while (isDecimal(character) && !(i == currentLine.length() - 1));
+
+                            if (character != 'e' && character != 'E') {
+                                if (isTokenBreaker(character)) {
+                                    i--;
+                                    addToken("NUMBER", start);
+                                } else if (i == currentLine.length() - 1 && isDecimal(character)) {
+                                    addToken("NUMBER", start);
+                                } else {
+                                    announceError(currentLine.substring(start, i + 1), start, false);
+                                    return;
+                                }
+                            } else {
+                                if (currentLine.length() - 1 == i) {
+                                    announceError("e", start, true);
+                                    return;
+                                }
+                                i++;
+                                character = currentLine.charAt(i);
+                                if (character == '-' || character == '+') {
+                                    if (i != currentLine.length() - 1) {
+                                        i++;
+                                        character = currentLine.charAt(i);
+                                    } else {
+                                        announceError("-", start, true);
+                                        return;
+                                    }
+
+                                }
+
+                                if (!isDecimal(character)) {
+                                    announceError("x", start, true);
+                                    return;
+                                }
+
+                                while (isDecimal(character) && !(i == currentLine.length() - 1)) {
+                                    i++;
+                                    character = currentLine.charAt(i);
+                                }
+
+                                if (isTokenBreaker(character)) {
+                                    i--;
+                                    addToken("NUMBER", start);
+                                } else if (i == currentLine.length() - 1 && isDecimal(character)) {
+                                    addToken("NUMBER", start);
+                                } else {
+                                    announceError(currentLine.substring(start, i + 1), start, false);
+                                    return;
+
+                                }
                             }
                         }
                     }
@@ -1005,7 +945,7 @@ class Main {
 
                         }
                     }
-                } else if (!isTokenBreaker(character)){
+                } else if (!isTokenBreaker(character)) {
                     String error;
                     error = Character.toString(character);
                     announceError(error, i, false);
@@ -1072,17 +1012,13 @@ class Main {
             return false;
         }
         if (isLetter(c)) {
-            System.out.println("i am a letter, " + c);
             return true;
         } else if ((i >= 48) && (i <= 57)) {
             // System.out.println("ascii = " + i);
-            System.out.println("i am a number, " + c);
             return true;
         } else if ((c == '.') || (c == '+') || (c == '-')) {
-            System.out.println("i am " + c);
             return true;
         } else {
-            // System.out.println("i am not part of an identifier --> " + c);
             return false;
         }
     }
@@ -1090,7 +1026,6 @@ class Main {
     public static boolean isLetter(char c) {
         int i = (int) c;
         if ((i >= 97) && (i <= 122)) {
-            // System.out.println("i am a letter, " + c);
             return true;
         }
         return false;
@@ -1098,7 +1033,7 @@ class Main {
 
     public static boolean isTokenBreaker(char c) {
         if ((c == '\'') || (c == '\"') || (c == '(') || (c == ')') || (c == '[') || (c == ']') || (c == '{')
-                || (c == '}') || (c == ' ') || (c == '~') || (c== '\t')) {
+                || (c == '}') || (c == ' ') || (c == '~') || (c == '\t')) {
             return true;
         } else {
             return false;
