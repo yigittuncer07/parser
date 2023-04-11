@@ -20,7 +20,12 @@ class Main {
 
     public static void main(String[] args) throws FileNotFoundException {
 
-        Scanner scanner = new Scanner(new File(args[0]));// Initialize scanner using args
+        Scanner tempScan = new Scanner(System.in);
+        System.out.print("What is the file name: ");
+        String fileName = tempScan.nextLine();
+        tempScan.close();
+
+        Scanner scanner = new Scanner(new File(fileName));// Initialize scanner using args
 
         while (scanner.hasNextLine()) {
             currentLine = scanner.nextLine();
@@ -957,9 +962,9 @@ class Main {
             j++;
             // Prints the token if the program didnt stop due to errors.
             printArrayListToFile();
-            printArrayListToTerminal();
-
         }
+        printArrayListToTerminal();
+
     }
 
     public static boolean isRestOfHex(char c) {
@@ -1074,6 +1079,7 @@ class Main {
 
         PrintWriter writer = new PrintWriter("output.txt");
         writer.println("LEXICAL ERROR [" + (j + 1) + ":" + (i + 1) + "]: Invalid token `" + lex + "`");
+        System.out.println("LEXICAL ERROR [" + (j + 1) + ":" + (i + 1) + "]: Invalid token `" + lex + "`");
         writer.close();
     }
 
