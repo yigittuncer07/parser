@@ -445,23 +445,24 @@ class Main {
                     start = i;
                     if (currentLine.length() - 1 == i) {// This prevents error from single characters
                         addToken("IDENTIFIER", start);
-                    }
-                    do {
-
-                        i++;
-                        character = currentLine.charAt(i);
-
-                    } while (isRestOfIdentifier(character) && !(i == currentLine.length() - 1));
-
-                    if (isTokenBreaker(character)) {
-                        i--;
-                        addToken("IDENTIFIER", start);
-                    } else if (i == currentLine.length() - 1 && isRestOfIdentifier(character)) {
-                        addToken("IDENTIFIER", start);
                     } else {
-                        announceError(currentLine.substring(start, i + 1), start, false);
-                        return;
+                        do {
 
+                            i++;
+                            character = currentLine.charAt(i);
+    
+                        } while (isRestOfIdentifier(character) && !(i == currentLine.length() - 1));
+    
+                        if (isTokenBreaker(character)) {
+                            i--;
+                            addToken("IDENTIFIER", start);
+                        } else if (i == currentLine.length() - 1 && isRestOfIdentifier(character)) {
+                            addToken("IDENTIFIER", start);
+                        } else {
+                            announceError(currentLine.substring(start, i + 1), start, false);
+                            return;
+    
+                        }
                     }
                 } else if (character == '0') {
                     start = i;
