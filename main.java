@@ -450,9 +450,9 @@ class Main {
 
                             i++;
                             character = currentLine.charAt(i);
-    
+
                         } while (isRestOfIdentifier(character) && !(i == currentLine.length() - 1));
-    
+
                         if (isTokenBreaker(character)) {
                             i--;
                             addToken("IDENTIFIER", start);
@@ -461,7 +461,7 @@ class Main {
                         } else {
                             announceError(currentLine.substring(start, i + 1), start, false);
                             return;
-    
+
                         }
                     }
                 } else if (character == '0') {
@@ -650,6 +650,7 @@ class Main {
                         i--;
                         addToken("IDENTIFIER", start);
                     } else {
+                        i--;
                         character = currentLine.charAt(++i);
                         while (isDecimal(character) && !(i == currentLine.length() - 1)) {
                             i++;
@@ -891,66 +892,73 @@ class Main {
                     }
                 } else if (character == '.') {
                     start = i;
-                    if (i == currentLine.length() - 1) {// No such thing as 0.
-                        announceError(".", start, true);
-                        return;
-                    }
-                    do {
-
-                        i++;
-                        character = currentLine.charAt(i);
-
-                    } while (isDecimal(character) && !(i == currentLine.length() - 1));
-
-                    if (character != 'e' && character != 'E') {
-                        if (isTokenBreaker(character)) {
-                            i--;
-                            addToken("NUMBER", start);
-                        } else if (i == currentLine.length() - 1 && isDecimal(character)) {
-                            addToken("NUMBER", start);
-                        } else {
-                            announceError(currentLine.substring(start, i + 1), start, false);
-                            return;
-                        }
+                    if (i == currentLine.length() - 1) {
+                        addToken("IDENTIFIER", start);
+                    } else if (isTokenBreaker(currentLine.charAt(++i))) {
+                        i--;
+                        addToken("IDENTIFIER", start);
                     } else {
-                        if (currentLine.length() - 1 == i) {
-                            announceError("e", start, true);
-                            return;
-                        }
-                        i++;
-                        character = currentLine.charAt(i);
-                        if (character == '-' || character == '+') {
-                            if (i != currentLine.length() - 1) {
-                                i++;
-                                character = currentLine.charAt(i);
+                        i--;
+                        do {
+                            System.out.println(character);
+                            i++;
+                            System.out.println(start);
+                            System.out.println(i);
+                            character = currentLine.charAt(i);
+
+                        } while (isDecimal(character) && !(i == currentLine.length() - 1));
+
+                        if (character != 'e' && character != 'E') {
+                            if (isTokenBreaker(character)) {
+                                i--;
+                                addToken("NUMBER", start);
+                            } else if (i == currentLine.length() - 1 && isDecimal(character)) {
+                                addToken("NUMBER", start);
                             } else {
-                                announceError("-", start, true);
+                                announceError(currentLine.substring(start, i + 1), start, false);
+                                return;
+                            }
+                        } else {
+                            if (currentLine.length() - 1 == i) {
+                                announceError("e", start, true);
+                                return;
+                            }
+                            i++;
+                            character = currentLine.charAt(i);
+                            if (character == '-' || character == '+') {
+                                if (i != currentLine.length() - 1) {
+                                    i++;
+                                    character = currentLine.charAt(i);
+                                } else {
+                                    announceError("-", start, true);
+                                    return;
+                                }
+
+                            }
+
+                            if (!isDecimal(character)) {
+                                announceError("x", start, true);
                                 return;
                             }
 
-                        }
+                            while (isDecimal(character) && !(i == currentLine.length() - 1)) {
+                                i++;
+                                character = currentLine.charAt(i);
+                            }
 
-                        if (!isDecimal(character)) {
-                            announceError("x", start, true);
-                            return;
-                        }
+                            if (isTokenBreaker(character)) {
+                                i--;
+                                addToken("NUMBER", start);
+                            } else if (i == currentLine.length() - 1 && isDecimal(character)) {
+                                addToken("NUMBER", start);
+                            } else {
+                                announceError(currentLine.substring(start, i + 1), start, false);
+                                return;
 
-                        while (isDecimal(character) && !(i == currentLine.length() - 1)) {
-                            i++;
-                            character = currentLine.charAt(i);
-                        }
-
-                        if (isTokenBreaker(character)) {
-                            i--;
-                            addToken("NUMBER", start);
-                        } else if (i == currentLine.length() - 1 && isDecimal(character)) {
-                            addToken("NUMBER", start);
-                        } else {
-                            announceError(currentLine.substring(start, i + 1), start, false);
-                            return;
-
+                            }
                         }
                     }
+
                 } else if (!isTokenBreaker(character)) {
                     String error;
                     error = Character.toString(character);
@@ -1060,7 +1068,7 @@ class Main {
         writer.close();
     }
 
-    public static void printArrayListToTerminal(){
+    public static void printArrayListToTerminal() {
         for (String str : tokens) {
             System.out.println(str);
         }
@@ -1073,7 +1081,7 @@ class Main {
                 tempI++;
             }
         }
-        if (currentLine.charAt(tempI) == ' '){
+        if (currentLine.charAt(tempI) == ' ') {
             tempI--;
         }
         lex = currentLine.substring(index, tempI + 1);
