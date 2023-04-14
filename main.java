@@ -900,10 +900,7 @@ class Main {
                     } else {
                         i--;
                         do {
-                            System.out.println(character);
                             i++;
-                            System.out.println(start);
-                            System.out.println(i);
                             character = currentLine.charAt(i);
 
                         } while (isDecimal(character) && !(i == currentLine.length() - 1));
@@ -969,9 +966,8 @@ class Main {
 
             // END OF IF STATEMENTS ---------------------------------------------------
             j++;
-            // Prints the token if the program didnt stop due to errors.
-            printArrayListToFile();
         }
+        printArrayListToFile();
         printArrayListToTerminal();
 
     }
@@ -1029,7 +1025,6 @@ class Main {
         if (isLetter(c)) {
             return true;
         } else if ((i >= 48) && (i <= 57)) {
-            // System.out.println("ascii = " + i);
             return true;
         } else if ((c == '.') || (c == '+') || (c == '-')) {
             return true;
@@ -1087,6 +1082,10 @@ class Main {
         lex = currentLine.substring(index, tempI + 1);
 
         PrintWriter writer = new PrintWriter("output.txt");
+        for (String str : tokens) {
+            writer.println(str);
+        }
+        printArrayListToTerminal();
         writer.println("LEXICAL ERROR [" + (j + 1) + ":" + (i + 1) + "]: Invalid token `" + lex + "`");
         System.out.println("LEXICAL ERROR [" + (j + 1) + ":" + (i + 1) + "]: Invalid token `" + lex + "`");
         writer.close();
