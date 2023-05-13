@@ -1,265 +1,220 @@
-import java.util.List;
+public class Parser{
+    private Token[] tokens;
+    private Token currentToken;
+    private String currentTokenType;
+    private int index;
 
-public class Parser {
-    private List<String> tokens;
-    private int currentToken;
+    public Parser(Token tokens[]){
+        this.tokens = tokens;
+        currentToken = tokens[0];
+        currentTokenType = tokens[0].getTokenType();
+    }
 
-    public void parse(String input) {
-        tokens = tokenize(input);
-        currentToken = 0;
-
+    public void parse(){
+        index = 0;
         program();
+        
     }
 
-    private List<String> tokenize(String input) {
-        // Split the input into tokens (assuming space-separated tokens)
-        return List.of(input.trim().split("\\s+"));
-    }
+    private void program(){
+        print(0, "<Program>");
 
-    private String getNextToken() {
-        if (currentToken < tokens.size()) {
-            return tokens.get(currentToken++);
-        }
-        return null;
-    }
-
-    private void program() {
-        topLevelForm();
-        if (getNextToken() != null) {
+        if (isCurrentToken("LEFTPAR")){
+            topLevelForm();
             program();
+        } else if (index == tokens.length - 1){//This means code has ended
+            print(1,"___");
+        } else {
+            announceError("(");
         }
     }
 
-    private void topLevelForm() {
-        String token = getNextToken();
-        if (token != null && token.equals("(")) {
+    private void topLevelForm(){
+        print(1,"<TopLevelForm>");
+
+        if (isCurrentToken("LEFTPAR")){
+            print(2,currentTokenType,"(");
+            getNextToken();
             secondLevelForm();
-            token = getNextToken();
-            if (token == null || !token.equals(")")) {
-                throw new RuntimeException("Missing closing parenthesis.");
+            if (isCurrentToken("RIGHTPAR")){
+                print(2, currentTokenType, ")");
+                getNextToken();
+            } else {
+                announceError(")");
             }
-        } else {
-            throw new RuntimeException("Invalid top-level form.");
         }
     }
 
-    private void secondLevelForm() {
-        String token = getNextToken();
-        if (token != null && token.equals("DEFINE")) {
+    private void secondLevelForm(){
+        print(2, "<SecondLevelForm>");
+
+        if (isCurrentToken("DEFINE")){
             definition();
-        } else if (token != null && token.equals("(")) {
+        } else if (isCurrentToken("LEFTPAR")){
+            print(3, currentTokenType, "(");
+            getNextToken();
             funCall();
-        } else {
-            throw new RuntimeException("Invalid second-level form.");
-        }
-    }
-
-    private void definition() {
-        definitionRight();
-    }
-
-    private void definitionRight() {
-        String token = getNextToken();
-        if (token != null && token.matches("[a-zA-Z]+")) {
-            expression();
-        } else if (token != null && token.equals("(")) {
-            token = getNextToken();
-            if (token != null && token.matches("[a-zA-Z]+")) {
-                argList();
-                token = getNextToken();
-                if (token != null && token.equals(")")) {
-                    statements();
-                } else {
-                    throw new RuntimeException("Missing closing parenthesis.");
-                }
+            if (isCurrentToken("RIGHTPAR")){
+                print(3, currentTokenType,")");
+                getNextToken();
             } else {
-                throw new RuntimeException("Invalid definition right.");
+                announceError(")");
             }
         } else {
-            throw new RuntimeException("Invalid definition right.");
+            announceError("DEFINE or LEFTPAR");
         }
     }
 
-    private void argList() {
-        String token = getNextToken();
-        if (token != null && token.matches("[a-zA-Z]+")) {
+    private void definition(){
+        print(3, "<Definition>");
+
+        if (isCurrentToken("DEFINE")){
+            print(4, currentTokenType, "define");
+            getNextToken();
+            definitionRight();
+        } else {
+            announceError("define");
+        }
+    }
+
+    private void definitionRight(){
+        print(4, "<DefinitionRight>");
+
+        if (isCurrentToken("IDENTIFIER")){
+            print(5, currentTokenType, currentToken.getValue());
+            getNextToken();
+            expressions();
+        } else if (isCurrentToken("LEFTPAR")){
+            print(5, currentTokenType, "(");
+            getNextToken();
+            if (isCurrentToken("IDENTIFIER")){
+                print(5, currentTokenType, currentToken.getValue());
+                getNextToken();
+            } else {
+                announceError("identifier");
+            }
             argList();
-        }
-    }
-
-    private void statements() {
-        String token = getNextToken();
-        if (token != null) {
-            if (token.equals("(")) {
-                expression();
-            } else if (token.equals("DEFINE")) {
-                definition();
+            if (isCurrentToken("RIGHTPAR")){
+                print(5, currentTokenType, ")");
+                getNextToken();
                 statements();
+
             } else {
-                throw new RuntimeException("Invalid statement.");
+                announceError("RIGHTPAR");
             }
-        }
-    }
 
-    private void expression() {
-        String token = getNextToken();
-        if (token != null && token.matches("[a-zA-Z]+")) {
-            // IDENTIFIER
-        } else if (token != null && token.matches("\\d+")) {
-            // NUMBER
-        } else if (token != null && token.matches("'[a-zA-Z]'")) {
-            // CHAR
-        } else if (token != null && (token.equals("#t") || token.equals("#f"))) {
-            // BOOLEAN
-        } else if (token != null && token.startsWith("\"") && token.endsWith("\"")) {
-            // STRING
-        } else if (token != null && token.equals("(")) {
-            expr();
-            token = getNextToken();
-            if (token == null || !token.equals(")")) {
-                throw new RuntimeException("Missing closing parenthesis.");
-            }
         } else {
-            throw new RuntimeException("Invalid expression.");
+            announceError("identifier or (");
         }
     }
 
-    private void expr() {
-        String token = getNextToken();
-        if (token != null && token.equals("LET")) {
-            letExpression();
-        } else if (token != null && token.equals("COND")) {
-            condExpression();
-        } else if (token != null && token.equals("IF")) {
-            ifExpression();
-        } else if (token != null && token.equals("BEGIN")) {
-            beginExpression();
-        } else {
-            funCall();
-        }
-    }
+    private void expressions(){
+        print(5, "<Expressions>");
 
-    private void funCall() {
-        String token = getNextToken();
-        if (token != null && token.matches("[a-zA-Z]+")) {
+        if (isCurrentToken("IDENTIFIER") || isCurrentToken("NUMBER") || isCurrentToken("CHAR") || isCurrentToken("BOOLEAN") || isCurrentToken("STRING") || isCurrentToken("LEFTPAR")) {
+            expression();
             expressions();
         } else {
-            throw new RuntimeException("Invalid function call.");
+
         }
+
     }
 
-    private void expressions() {
-        String token = getNextToken();
-        if (token != null) {
-            if (!token.equals(")")) {
-                expression();
-                expressions();
-            } else {
-                currentToken--;
-            }
-        }
-    }
+    private void expression(){
+        print(6, "<Expression>");
 
-    private void letExpression() {
-        String token = getNextToken();
-        if (token != null && token.equals("(")) {
-            varDefs();
-            token = getNextToken();
-            if (token != null && token.equals(")")) {
-                statements();
+        if (isCurrentToken("IDENTIFIER") || isCurrentToken("NUMBER") || isCurrentToken("CHAR") || isCurrentToken("BOOLEAN") || isCurrentToken("STRING")) {
+
+        } else if (isCurrentToken("LEFTPAR")) {
+            print(7, currentTokenType, "(");
+            getNextToken();
+            expr();
+            if (isCurrentToken("RIGHTPAR")){
+                print(7, currentTokenType, ")");
+                getNextToken();
             } else {
-                throw new RuntimeException("Missing closing parenthesis.");
+                announceError(")");
             }
-        } else if (token != null && token.matches("[a-zA-Z]+")) {
-            token = getNextToken();
-            if (token != null && token.equals("(")) {
-                varDefs();
-                token = getNextToken();
-                if (token != null && token.equals(")")) {
-                    statements();
-                } else {
-                    throw new RuntimeException("Missing closing parenthesis.");
-                }
-            } else {
-                throw new RuntimeException("Invalid let expression.");
-            }
+            
         } else {
-            throw new RuntimeException("Invalid let expression.");
+            announceError("identifier or number or char or boolean or string or (");
         }
     }
 
-    private void varDefs() {
-        String token = getNextToken();
-        if (token != null && token.matches("[a-zA-Z]+")) {
-            token = getNextToken();
-            if (token != null && token.equals("(")) {
-                expression();
-                token = getNextToken();
-                if (token != null && token.equals(")")) {
-                    varDef();
-                } else {
-                    throw new RuntimeException("Missing closing parenthesis.");
-                }
-            } else {
-                throw new RuntimeException("Invalid variable definition.");
-            }
-        }
+    private void expr(){
+        // print(7, "<Expr>");
+
     }
 
-    private void varDef() {
-        String token = getNextToken();
-        if (token != null) {
-            if (token.equals("(")) {
-                varDefs();
-            } else {
-                currentToken--;
-            }
-        }
+    private void argList(){
+        // print(5, "<ArgList>");
+
     }
 
-    private void condExpression() {
-        String token = getNextToken();
-        if (token != null && token.equals("(")) {
-            condBranches();
+    private void statements(){
+        // print(5, "<Statements>");
+
+    }
+
+    private void funCall(){
+        // print(3, "<FunCall>");
+
+    }
+    private void print(int tabs, String string, String value){
+        for (int i = 0; i < tabs; i++){
+            System.out.print("\t");
+        }
+        System.out.print(string + " (" + value + ")\n");
+    }
+    
+    private void print(int tabs, String string){
+        for (int i = 0; i < tabs; i++){
+            System.out.print("\t");
+        }
+        System.out.print(string + "\n");
+    }
+
+    private boolean isCurrentToken(String type){
+        if (currentToken == null ){
+            return false;
+        }
+        if (currentTokenType.equals(type) ){
+            return true;
+        }
+        return false;
+    }
+
+    public void announceError(String expected){
+        int location[] = currentToken.getLocation();
+        System.out.println("SYNTAX ERROR [" + (location[0] + 1) + ":" + (location[1] + 1) + "]: '" + expected + "' is expected");
+        System.exit(0);
+    }
+
+    public boolean checkAhead(String tokenType){
+        if (isEndOfArray()){
+            return false;
+        } else if (tokenType.equals(currentTokenType)){
+            // System.out.println(tokenType + " == " + currentTokenType);
+            return true;
+        }
+        return false;
+
+    }
+
+    private void getNextToken(){
+        if (isEndOfArray()){
+            currentToken = null;
+            currentTokenType = null;
         } else {
-            throw new RuntimeException("Invalid cond expression.");
-        }
+            currentToken = tokens[++index];
+            currentTokenType = currentToken.getTokenType();
+        }  
     }
 
-    private void condBranches() {
-        String token = getNextToken();
-        if (token != null && token.equals("(")) {
-            expression();
-            token = getNextToken();
-            if (token != null && token.equals(")")) {
-                statements();
-                condBranches();
-            } else {
-                throw new RuntimeException("Missing closing parenthesis.");
-            }
-        } else {
-            currentToken--;
-        }
-    }
-
-    private void ifExpression() {
-        expression();
-        expression();
-        endExpression();
-    }
-
-    private void endExpression() {
-        String token = getNextToken();
-        if (token != null) {
-            if (token.equals(")")) {
-                currentToken--;
-            } else {
-                expression();
-            }
-        }
-    }
-
-    private void beginExpression() {
-        statements();
+    private boolean isEndOfArray(){
+        if (index < tokens.length - 1) 
+            return false;
+        else
+            return true;
     }
 }
