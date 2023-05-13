@@ -671,6 +671,14 @@ public class Lexer {
         printArrayListToTerminal();
     }
 
+    public Token[] getTokens(){
+        Token tokensArray[] = new Token[tokens.size()];
+        for (int i = 0; i < tokens.size(); i++){
+            tokensArray[i] = tokens.get(i);
+        }
+        return tokensArray;
+    }
+
     public static boolean isKeyword(String word) {
         for (String keyword : keywords) {
             if (word.equals(keyword)) {
