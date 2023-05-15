@@ -64,7 +64,7 @@ public class Parser{
                 announceError(")");
             }
         } else {
-            announceError("DEFINE or LEFTPAR");
+            announceError("define or leftpar");
         }
     }
 
@@ -107,7 +107,7 @@ public class Parser{
             }
 
         } else {
-            announceError("identifier or (");
+            announceError("identifier or leftpar");
         }
     }
 
@@ -180,23 +180,23 @@ public class Parser{
     private void condBranches(int depth){
         print(depth, "<condBranches>");
 
-        if (isCurrentToken("(")){
+        if (isCurrentToken("LEFTPAR")){
             print(depth + 1, currentTokenType, "(");
             getNextToken();
 
             expression(depth + 1);
             statements(depth + 1);
 
-            if (isCurrentToken(")")){
+            if (isCurrentToken("RIGHTPAR")){
                 print(depth + 1, currentTokenType, ")");
                 getNextToken();
 
-                condBranches(depth);
+                condBranches(depth + 1);
             } else {
-                announceError(")");
+                announceError("rightpar");
             }
         } else {
-            announceError("(");
+            announceError("leftpar");
         }
     }
 
@@ -214,18 +214,139 @@ public class Parser{
 
     private void letExpr(int depth){
         print(depth, "<LetExpr>");
+        if (isCurrentToken("LEFTPAR")){
+            print(depth + 1, currentTokenType, currentToken.getValue());
+            getNextToken();
+
+            varDefs(depth + 1);
+
+            if (isCurrentToken("RIGHTPAR")){
+                print(depth + 1, currentTokenType, currentToken.getValue());
+                getNextToken();
+
+                statements(depth + 1);
+
+            } else {
+                announceError("rightpar");
+            }
+
+        } else if (isCurrentToken("IDENTIFIER")){
+            print(depth + 1, currentTokenType, currentToken.getValue());
+            getNextToken();
+
+            if (isCurrentToken("LEFTPAR")){
+                print(depth + 1, currentTokenType, currentToken.getValue());
+                getNextToken();
+
+                varDefs(depth + 1);
+
+                if (isCurrentToken("RIGHTPAR")){
+                    print(depth + 1, currentTokenType, currentToken.getValue());
+                    getNextToken();
+
+                    statements(depth + 1);
+
+                } else {
+                    announceError("rightpar");
+                }
+            } else {
+                announceError("leftpar");
+            }
+        } else {
+            announceError("leftpar or identifier");
+        }
     }
 
     private void varDefs(int depth){
+        print(depth,"<VarDefs>");
+
+        if (isCurrentToken("LEFTPAR")){
+            print(depth + 1, currentTokenType, "(");
+            getNextToken();
+
+            if (isCurrentToken("IDENTIFIER")){
+                print(depth + 1, currentTokenType, currentToken.getValue());
+                getNextToken();
+
+                expression(depth + 1);
+
+                if (isCurrentToken("RIGHTPAR")){
+                    print(depth + 1, currentTokenType, ")");
+                    getNextToken();
+
+                    varDef(depth + 1);
+                } else {
+                    announceError("rightpar");
+                }
+
+            } else {
+                announceError("identifier");
+            }
+        } else {
+            announceError("leftpar");
+        }
 
     }
 
-    private void ifExpression(int depth){
-        print(depth,"<IfExpression>");
+    private void varDef(int depth) {
+        print(depth, "<VarDef>");
+        if (isCurrentToken("LEFTPAR")) {
+            varDefs(depth + 1);
+        } else {
+            print(depth + 1, "___");
+        }
     }
 
-    private void beginExpression(int depth){
-        print(depth,"<BeginExpression>");
+    private void ifExpression(int depth) {
+        print(depth, "<IfExpression>");
+
+        if (isCurrentToken("IF")) {
+            print(depth + 1, currentTokenType, "if");
+            getNextToken();
+            expression(depth + 1);
+            expression(depth + 1);
+            endExpression(depth + 1);
+        } else {
+            announceError("if");
+        }
+    }
+
+    private void condBranch(int depth) {
+        print(depth, "<CondBranch>");
+        if (isCurrentToken("LEFTPAR")) {
+            print(depth + 1, currentTokenType, "(");
+            getNextToken();
+            expression(depth + 1);
+            statements(depth + 1);
+            if (isCurrentToken("RIGHTPAR")) {
+                print(depth + 1, currentTokenType, ")");
+                getNextToken();
+            } else {
+                announceError("rightpar");
+            }
+        } else {
+            print(depth + 1, "___");
+        }
+    }
+
+    private void beginExpression(int depth) {
+        print(depth, "<BeginExpression>");
+        if (isCurrentToken("BEGIN")) {
+            print(depth + 1, currentTokenType, "begin");
+            getNextToken();
+            statements(depth + 1);
+        } else {
+            announceError("begin");
+        }
+    }
+
+    private void endExpression(int depth) {
+        print(depth, "<EndExpression>");
+        if (isCurrentToken("IDENTIFIER") || isCurrentToken("NUMBER") || isCurrentToken("CHAR") || isCurrentToken("BOOLEAN") || isCurrentToken("STRING") || isCurrentToken("LEFTPAR")) {
+            expression(depth + 1);
+        } else {
+            print(depth + 1, "___");
+        }
     }
 
     private void funCall(int depth){
@@ -247,6 +368,8 @@ public class Parser{
         if (isCurrentToken("IDENTIFIER")){
             print(depth + 1, currentTokenType, currentToken.getValue());
             getNextToken();
+
+            argList(depth + 1);
         } else {
             print(depth + 1, "___");
         }
@@ -272,14 +395,14 @@ public class Parser{
 
     private void print(int tabs, String string, String value){
         for (int i = 0; i < tabs; i++){
-            System.out.print("\t");
+            System.out.print("  ");
         }
         System.out.print(string + " (" + value + ")\n");
     }
     
     private void print(int tabs, String string){
         for (int i = 0; i < tabs; i++){
-            System.out.print("\t");
+            System.out.print("  ");
         }
         System.out.print(string + "\n");
     }
