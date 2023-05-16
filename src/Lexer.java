@@ -814,6 +814,7 @@ public class Lexer {
         writer.println("LEXICAL ERROR [" + (j + 1) + ":" + (index + 1) + "]: Invalid token `" + lex + "`");
         System.out.println("LEXICAL ERROR [" + (j + 1) + ":" + (index + 1) + "]: Invalid token `" + lex + "`");
         writer.close();
+        System.exit(0);
     }
 
 }

@@ -1,5 +1,6 @@
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.PrintWriter;
 // import java.util.Scanner;
 
 class Main {
@@ -19,10 +20,15 @@ class Main {
             e.printStackTrace();
         }
 
-        Token tokens[] = lexer.getTokens();
-        Parser parser = new Parser(tokens);
+        try {
+            PrintWriter writer = new PrintWriter("output.txt");
+            Token tokens[] = lexer.getTokens();
+            Parser parser = new Parser(tokens, writer);
+            parser.parse();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
 
-        parser.parse();        
     }
 
 }

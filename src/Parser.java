@@ -1,11 +1,16 @@
+import java.io.PrintWriter;
+
 public class Parser{
     private Token[] tokens;
     private Token currentToken;
     private String currentTokenType;
     private int index;
+    private PrintWriter writer;
 
-    public Parser(Token tokens[]){
+
+    public Parser(Token tokens[], PrintWriter writer){
         this.tokens = tokens;
+        this.writer = writer;
         currentToken = tokens[0];
         currentTokenType = tokens[0].getTokenType();
     }
@@ -13,7 +18,9 @@ public class Parser{
     public void parse(){
         index = 0;
         program(0);
-        
+
+        //After the program ends, close the writer
+        writer.close();
     }
 
     // Depth represents how deep the function is in the call stack. It doesnt actually do anything,
@@ -394,17 +401,27 @@ public class Parser{
     //----------------------------------------------------------------------
 
     private void print(int tabs, String string, String value){
+        String str = "";
         for (int i = 0; i < tabs; i++){
-            System.out.print("  ");
+            str += "  ";
         }
-        System.out.print(string + " (" + value + ")\n");
+        str = str + (string + " (" + value + ")\n");
+        // System.out.print(string + " (" + value + ")\n");
+        System.out.print(str);
+        writer.write(str);
+        
+        
     }
     
     private void print(int tabs, String string){
+        String str = "";
         for (int i = 0; i < tabs; i++){
-            System.out.print("  ");
+            str += "  ";
         }
-        System.out.print(string + "\n");
+        str = str + string + "\n";
+        System.out.print(str);
+        writer.write(str);
+        
     }
 
     private boolean isCurrentToken(String type){
@@ -419,7 +436,9 @@ public class Parser{
 
     public void announceError(String expected){
         int location[] = currentToken.getLocation();
-        System.out.println("SYNTAX ERROR [" + (location[0] + 1) + ":" + (location[1] + 1) + "]: '" + expected + "' is expected");
+        String str = "SYNTAX ERROR [" + (location[0] + 1) + ":" + (location[1] + 1) + "]: '" + expected + "' is expected";
+        System.out.println(str);
+        writer.write(str);
         System.exit(0);
     }
 
