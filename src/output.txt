@@ -55,14 +55,14 @@
                               <Expr>
                                 <FunCall>
                                   IDENTIFIER (=)
-                                <Expressions>
-                                  <Expression>
-                                    IDENTIFIER (i)
                                   <Expressions>
                                     <Expression>
-                                      IDENTIFIER (n)
+                                      IDENTIFIER (i)
                                     <Expressions>
-                                      ___
+                                      <Expression>
+                                        IDENTIFIER (n)
+                                      <Expressions>
+                                        ___
                               RIGHTPAR ())
                             <Expression>
                               IDENTIFIER (cur)
@@ -72,44 +72,42 @@
                                 <Expr>
                                   <FunCall>
                                     IDENTIFIER (fib)
-                                  <Expressions>
-                                    <Expression>
-                                      IDENTIFIER (cur)
                                     <Expressions>
                                       <Expression>
-                                        LEFTPAR (()
-                                        <Expr>
-                                          <FunCall>
-                                            IDENTIFIER (+)
-                                          <Expressions>
-                                            <Expression>
-                                              IDENTIFIER (prev)
-                                            <Expressions>
-                                              <Expression>
-                                                IDENTIFIER (cur)
-                                              <Expressions>
-                                                ___
-                                        RIGHTPAR ())
+                                        IDENTIFIER (cur)
                                       <Expressions>
                                         <Expression>
                                           LEFTPAR (()
                                           <Expr>
                                             <FunCall>
                                               IDENTIFIER (+)
-                                            <Expressions>
-                                              <Expression>
-                                                IDENTIFIER (i)
                                               <Expressions>
                                                 <Expression>
-                                                  NUMBER (1)
+                                                  IDENTIFIER (prev)
                                                 <Expressions>
-                                                  ___
+                                                  <Expression>
+                                                    IDENTIFIER (cur)
+                                                  <Expressions>
+                                                    ___
                                           RIGHTPAR ())
                                         <Expressions>
-                                          ___
+                                          <Expression>
+                                            LEFTPAR (()
+                                            <Expr>
+                                              <FunCall>
+                                                IDENTIFIER (+)
+                                                <Expressions>
+                                                  <Expression>
+                                                    IDENTIFIER (i)
+                                                  <Expressions>
+                                                    <Expression>
+                                                      NUMBER (1)
+                                                    <Expressions>
+                                                      ___
+                                            RIGHTPAR ())
+                                          <Expressions>
+                                            ___
                                 RIGHTPAR ())
                         RIGHTPAR ())
               RIGHTPAR ())
-    RIGHTPAR ())
-  <Program>
-    ___
+SYNTAX ERROR [3:55]: ')' is expected
