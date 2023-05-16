@@ -3,6 +3,7 @@ import java.io.PrintWriter;
 public class Parser{
     private Token[] tokens;
     private Token currentToken;
+    private Token previousToken;
     private String currentTokenType;
     private int index;
     private PrintWriter writer;
@@ -362,7 +363,7 @@ public class Parser{
         if (isCurrentToken("IDENTIFIER")){
             print(depth + 1, currentTokenType, currentToken.getValue());
             getNextToken();
-            expressions(depth);
+            expressions(depth + 1);
         } else {
             announceError("identifier");
         }
@@ -435,10 +436,16 @@ public class Parser{
     }
 
     public void announceError(String expected){
-        int location[] = currentToken.getLocation();
+        int location[] = new int[2];
+        if (currentToken == null) {
+            location = previousToken.getLocation();
+        } else {
+            location = currentToken.getLocation();
+        }
         String str = "SYNTAX ERROR [" + (location[0] + 1) + ":" + (location[1] + 1) + "]: '" + expected + "' is expected";
         System.out.println(str);
         writer.write(str);
+        writer.close();
         System.exit(0);
     }
 
@@ -455,9 +462,11 @@ public class Parser{
 
     private void getNextToken(){
         if (isEndOfArray()){
+            previousToken = currentToken;
             currentToken = null;
             currentTokenType = null;
         } else {
+            previousToken = currentToken;
             currentToken = tokens[++index];
             currentTokenType = currentToken.getTokenType();
         }  
